@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Deer
   - Hunter
+  - Sun
   layers:
   - Default
   - TransparentFX

@@ -22,6 +22,9 @@ public class CurrentGameManager : MonoBehaviour
     public float maxThreshold = 0.5f;
     public float animationTime = 1f;
 
+    [Header("Sun nonsense")]
+    public float sunAxisAngle = 45f;
+
     GameObject deer;
     GameObject hunter;
 
@@ -52,6 +55,11 @@ public class CurrentGameManager : MonoBehaviour
     void Update()
     {
         gameTime += Time.deltaTime / dayDuration;
+
+        float gt = Mathf.Repeat(gameTime, 1f);
+        Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
+        Vector3 sunDirectionNow = Quaternion.Euler(0, 0, -gt*360f) * sunDirectionMorning;
+        GameObject.FindWithTag("Sun").transform.rotation = Quaternion.LookRotation(sunDirectionNow, Vector3.up);
 
         if (isSwitchingStates) return;
 
@@ -122,8 +130,8 @@ public class CurrentGameManager : MonoBehaviour
             yield return null;
         }
 
-        b.intensity.value = maxBloom;
-        b.threshold.value = 0f;
+        b.intensity.value = 0;
+        b.threshold.value = maxThreshold;
         isSwitchingStates = false;
     }
 
