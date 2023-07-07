@@ -489,10 +489,10 @@ MonoBehaviour:
   worldSeed: 0
   noiseHeight: 20
   noise:
-    octaves: 3
-    scale: 100
+    octaves: 5
+    scale: 400
     persistence: 0.5
-    lacunarity: 2
+    lacunarity: 3
   edgeEqualisationRadius: 50
 --- !u!4 &1055798629
 Transform:
