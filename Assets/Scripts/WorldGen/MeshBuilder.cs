@@ -28,6 +28,7 @@ public static class MeshBuilder {
             for (int i = 0; i < numVertsPerSide; i++) {
                 for (int j = 0; j < numVertsPerSide; j++) {
                     verts.Add (start + Vector3.right * i * quadWidth + Vector3.forward * j * quadWidth);
+                    uv.Add (new Vector2 (i / numQuadsPerSide, j / numQuadsPerSide));
 
                     if(i != numVertsPerSide - 1 && j != numVertsPerSide - 1) {
                         tris.Add (vertIndex);
