@@ -19,11 +19,16 @@ public class WorldGenerator : MonoBehaviour {
     public Noise noise;
     public float edgeEqualisationRadius = 10.0f;
 
+    [Header ("Population")]
+    public int numRocks = 500;
+    public GameObject[] rockPrefabs;
+
     Mesh blankMesh;
 
     private void Start () {
         if (worldSeed == 0.0f) worldSeed = Random.Range (-1e6f, 1e6f);
         Generate ();
+        Populate ();
     }
 
     void Generate () {
@@ -42,6 +47,10 @@ public class WorldGenerator : MonoBehaviour {
         g.transform.position = new Vector3 (x, 0f, z) * chunkWidth;
         g.AddComponent<MeshFilter> ().mesh = TransformMesh (blankMesh, (x, z));
         g.AddComponent<MeshRenderer> ().material = terrainMaterial;
+    }
+
+    void Populate () {
+
     }
 
     public Mesh TransformMesh (Mesh m, (int, int) chunkNum) {
