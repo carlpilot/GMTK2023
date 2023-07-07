@@ -27,6 +27,7 @@ public class WorldGenerator : MonoBehaviour {
 
     private void Start () {
         if (worldSeed == 0.0f) worldSeed = Random.Range (-1e6f, 1e6f);
+        Random.InitState ((int)worldSeed);
         Generate ();
         Populate ();
     }
@@ -47,10 +48,25 @@ public class WorldGenerator : MonoBehaviour {
         g.transform.position = new Vector3 (x, 0f, z) * chunkWidth;
         g.AddComponent<MeshFilter> ().mesh = TransformMesh (blankMesh, (x, z));
         g.AddComponent<MeshRenderer> ().material = terrainMaterial;
+        g.AddComponent<MeshCollider> ().sharedMesh = g.GetComponent<MeshFilter> ().mesh;
     }
 
     void Populate () {
-
+        int numAttempts = 0;
+        int numRocksPlaced = 0;
+        while (numAttempts < numRocks * 2) {
+            RaycastHit hit;
+            if (Physics.Raycast(new Vector3(Random.Range(-mapWidth / 2f, mapWidth / 2f), 1000f, Random.Range (-mapWidth / 2f, mapWidth / 2f)), Vector3.down, out hit)) {
+                if(hit.collider.gameObject.name.Contains("Chunk")) {
+                    GameObject g = Instantiate (rockPrefabs[Random.Range (0, rockPrefabs.Length)], hit.point, Random.rotationUniform);
+                    g.transform.parent = hit.transform;
+                    numRocksPlaced++;
+                    if (numRocksPlaced == numRocks) break;
+                }
+            }
+            numAttempts++;
+        }
+        print ("Spawned " + numRocksPlaced + " rocks");
     }
 
     public Mesh TransformMesh (Mesh m, (int, int) chunkNum) {
