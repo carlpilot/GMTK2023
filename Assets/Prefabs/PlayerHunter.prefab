@@ -285,6 +285,12 @@ MonoBehaviour:
   camera: {fileID: 8341135707786435903}
   rotationSpeed: 2
   runSpeed: 5
+  trapped: 0
+  chanceToFreeFromTrap: 0.05
+  crouching: 0
+  crouchSpeed: 2
+  noiseRange: 30
+  crouchNoiseRange: 15
 --- !u!114 &8341135708975967013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,5 +305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 2799189893399765348, guid: 64e4692a0b0094f28b8fcf975f6965ea,
     type: 3}
-  bulletSpeed: 30
+  gunshotSFX: {fileID: 0}
+  reloadSFX: {fileID: 0}
+  bulletSpeed: 200
   bulletLife: 5
+  soundRange: 100
