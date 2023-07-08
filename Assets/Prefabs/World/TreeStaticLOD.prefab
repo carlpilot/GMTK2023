@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3468858791403046162}
   - component: {fileID: 3468858791403046163}
+  - component: {fileID: 5554287907403357556}
   m_Layer: 0
   m_Name: TreeStaticLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3468858791403046162
 Transform:
@@ -62,6 +63,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8564066818911996447}
   m_Enabled: 1
+--- !u!136 &5554287907403357556
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641493411673777025}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &7019413501308207297
 PrefabInstance:
   m_ObjectHideFlags: 0
