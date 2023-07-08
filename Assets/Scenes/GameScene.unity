@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -335,6 +335,13 @@ MonoBehaviour:
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
+  - name: Bear Traps
+    prefabs:
+    - {fileID: 1142099830057205866, guid: c8633dd109037654d858b629a92e8a47, type: 3}
+    numToSpawn: 25
+    rotationMode: 1
+    minSize: 1
+    maxSize: 1
 --- !u!4 &120987022
 Transform:
   m_ObjectHideFlags: 0
