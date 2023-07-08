@@ -545,17 +545,17 @@ PrefabInstance:
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.539778
+      value: -6.01
       objectReference: {fileID: 0}
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.00000023841858
       objectReference: {fileID: 0}
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.3753357
+      value: 3.355
       objectReference: {fileID: 0}
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
@@ -595,7 +595,7 @@ PrefabInstance:
     - target: {fileID: 4619453910438681615, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
       propertyPath: m_Name
-      value: animatable_deer
+      value: animatable_deer Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f702b56f1f93705ae9e4a26fe932073b, type: 3}
@@ -653,6 +653,34 @@ MonoBehaviour:
   - m_Rig: {fileID: 514549006}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &2071362825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127439425777479432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6c77b0b3bda562f9493d7016e9d4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontLeft: {fileID: 961580425}
+  frontRight: {fileID: 675110101}
+  backLeft: {fileID: 1431345338}
+  backRight: {fileID: 1070458802}
+  frontLeftShoulder: {fileID: 3053243589730225501}
+  frontRightShoulder: {fileID: 8352234261382999459}
+  backLeftShoulder: {fileID: 704585414588428060}
+  backRightShoulder: {fileID: 5952108753591818926}
+  walkable:
+    serializedVersion: 2
+    m_Bits: 55
+  DEBUGWalkSpeed: 2
+  bodyVelDampingAlpha: 0.1
+  stepHeight: 0.1
+  horizontalMultiplier: 0.2
+  stepTime: 1
 --- !u!4 &2661877533879729262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7732121423883161449, guid: f702b56f1f93705ae9e4a26fe932073b,
