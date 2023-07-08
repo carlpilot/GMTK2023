@@ -69,7 +69,7 @@ public class DeerMovement : MonoBehaviour
         state = State.FLEE;
 
         // This might be broken: Looks like if the distance is too large, the deer won't run and can't exit FLEE state
-        Vector3 destination = (transform.position - point).normalized * Random.Range(40, 60);
+        Vector3 destination = (transform.position - point).normalized * Random.Range(60, 80);
         // boundaries are +/- 250
         destination.x = Mathf.Clamp(destination.x, -250, 250);
         destination.z = Mathf.Clamp(destination.z, -250, 250);
@@ -99,7 +99,7 @@ public class DeerMovement : MonoBehaviour
 
     public void follow(WayPoint newTarget) {
         state = State.FOLLOW;
-        
+
         target = newTarget;
         // get a random point within the target's radius
         Vector3 randomPoint = target.transform.position + (Random.insideUnitSphere * target.radius);

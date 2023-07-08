@@ -5,14 +5,19 @@ using UnityEngine;
 public class ShootTheDeer : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    public AudioSource gunshotSFX;
+    public AudioSource reloadSFX;
 
     List<GameObject> bullets = new List<GameObject>();
 
     public float bulletSpeed = 10f;
     public float bulletLife = 5f;
+    public float soundRange = 100f;
 
     PlayerMovement pm;
 
+    private float cooldown = 3f;
+    private float cooldownTimer = 0.5f;
 
     void Awake()
     {
@@ -26,12 +31,26 @@ public class ShootTheDeer : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && cooldownTimer <= 0f)
         {
+            gunshotSFX.Play();
+            cooldownTimer = cooldown;
             GameObject bullet = Instantiate(bulletPrefab, pm.camera.position, pm.camera.rotation);
             bullets.Add(bullet);
             StartCoroutine(UpdateBullet(bullet));
+
+            // Scare the deer
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, soundRange);
+            foreach (Collider c in hitColliders) {
+                if (c.gameObject.tag == "Deer") {
+                    c.transform.parent.gameObject.GetComponent<DeerMovement>().flee(transform.position);
+                }
+            }
+
+            StartCoroutine(ReloadSounds());
         }
+        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer < 0f) cooldownTimer = 0f;
     }
 
     void OnDisable()
@@ -89,5 +108,11 @@ public class ShootTheDeer : MonoBehaviour
         {
             return false;
         }
+    }
+
+    IEnumerator ReloadSounds()
+    {
+        yield return new WaitForSeconds(2f);
+        reloadSFX.Play();
     }
 }

@@ -19,7 +19,6 @@ public class Scary : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
         foreach (Collider c in hitColliders) {
             if (c.gameObject.GetComponent<DeerMovement>() != null) {
-                print("BOO");
                 c.gameObject.GetComponent<DeerMovement>().flee(transform.position);
             }
         }

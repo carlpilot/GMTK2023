@@ -13,13 +13,14 @@ public class HerdManager : MonoBehaviour
     private WayPoint target;
     private bool chillin = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
-    }
-
     public void Start2() {
+        waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
+        for (int i = 0; i < waypoints.Length; i++) {
+            WayPoint temp = waypoints[i];
+            int randomIndex = Random.Range(i, waypoints.Length);
+            waypoints[i] = waypoints[randomIndex];
+            waypoints[randomIndex] = temp;
+        }
         foreach (WayPoint w in waypoints) {
             WorldGenerator wg = FindObjectOfType<WorldGenerator>();
             w.transform.position = new Vector3(w.transform.position.x, wg.GetWorldHeight(w.transform.position.x, w.transform.position.z), w.transform.position.z);
@@ -71,7 +72,7 @@ public class HerdManager : MonoBehaviour
                 d.idle();
             }
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(Random.Range(5, 15));
         foreach (DeerMovement d in deer) {
             if (d.getState() != DeerMovement.State.FLEE) {
                 d.follow(target);
