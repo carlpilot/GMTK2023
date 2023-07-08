@@ -49,6 +49,7 @@ public class WorldGenerator : MonoBehaviour {
     void GenerateChunk (int x, int z) {
         GameObject g = new GameObject ("Chunk " + x + ", " + z);
         g.transform.position = new Vector3 (x, 0f, z) * chunkWidth;
+        g.isStatic = true;
         g.AddComponent<MeshFilter> ().mesh = TransformMesh (blankMesh, (x, z));
         g.AddComponent<MeshRenderer> ().material = terrainMaterial;
         g.AddComponent<MeshCollider> ().sharedMesh = g.GetComponent<MeshFilter> ().mesh;
@@ -72,7 +73,7 @@ public class WorldGenerator : MonoBehaviour {
                     if (rotationMode == RotationMode.RandomXYZ) rotation = Random.rotationUniform;
                     else if (rotationMode == RotationMode.RandomY) rotation = Quaternion.Euler (Vector3.up * Random.value * 360.0f);
                     else rotation = Quaternion.identity;
-                    GameObject g = Instantiate (prefabs[Random.Range (0, prefabs.Length)], hit.point, rotation);
+                    GameObject g = Instantiate (prefabs[Random.Range (0, prefabs.Length)], hit.point - Vector3.up * 0.1f, rotation);
                     g.transform.localScale *= Random.Range (minSize, maxSize);
                     g.transform.parent = hit.transform;
                     numPlaced++;
