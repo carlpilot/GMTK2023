@@ -13,13 +13,8 @@ public class HerdManager : MonoBehaviour
     private WayPoint target;
     private bool chillin = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
-    }
-
     public void Start2() {
+        waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
         foreach (WayPoint w in waypoints) {
             WorldGenerator wg = FindObjectOfType<WorldGenerator>();
             w.transform.position = new Vector3(w.transform.position.x, wg.GetWorldHeight(w.transform.position.x, w.transform.position.z), w.transform.position.z);
