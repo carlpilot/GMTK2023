@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BearTrap : MonoBehaviour
-{
+public class BearTrap : MonoBehaviour {
 
     public GameObject jaw1, jaw2;
 
@@ -14,7 +13,7 @@ public class BearTrap : MonoBehaviour
 
     IEnumerator Close () {
         int closeFrames = Mathf.RoundToInt (closeTime / Time.deltaTime);
-        for(int i = 0; i < closeFrames; i++) {
+        for (int i = 0; i < closeFrames; i++) {
             jaw1.transform.Rotate (Vector3.left * closeAngle / closeFrames);
             jaw2.transform.Rotate (Vector3.left * closeAngle / closeFrames);
             yield return new WaitForEndOfFrame ();
@@ -22,6 +21,9 @@ public class BearTrap : MonoBehaviour
     }
 
     private void OnTriggerEnter (Collider other) {
-        if (other.tag == "Deer" || other.gameObject.layer == 6) StartCoroutine (Close ());
+        if (isOpen && (other.tag == "Deer" || other.gameObject.layer == 6)) {
+            StartCoroutine (Close ());
+            if (other.GetComponent<PlayerMovement> () != null) other.GetComponent<PlayerMovement> ().trapped = true;
+        }
     }
 }
