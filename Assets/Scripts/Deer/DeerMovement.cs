@@ -99,9 +99,7 @@ public class DeerMovement : MonoBehaviour
 
     public void follow(WayPoint newTarget) {
         state = State.FOLLOW;
-
-        if (target != null) target.setActive(false);
-        newTarget.setActive(true);
+        
         target = newTarget;
         // get a random point within the target's radius
         Vector3 randomPoint = target.transform.position + (Random.insideUnitSphere * target.radius);

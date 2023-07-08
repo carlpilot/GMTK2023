@@ -139,7 +139,9 @@ public class CurrentGameManager : MonoBehaviour
             for (int i = 0; i < 5; i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(Random.Range(-50, 50f), 0f, Random.Range(-50, 50f)), Quaternion.identity);
                 currentAI.Add(deer);
+                deer.transform.parent = transform;
             }
+            gameObject.GetComponent<HerdManager>().Start2();
             // TODO: move the hunter to a random location
         } else {
             // Switching to deer

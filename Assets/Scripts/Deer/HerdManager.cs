@@ -5,17 +5,25 @@ using UnityEngine;
 public class HerdManager : MonoBehaviour
 {
 
-    public WayPoint[] waypoints;
+    public GameObject wayPointHolder;
+    private WayPoint[] waypoints;
 
     private DeerMovement[] deer;
     private int waypointIndex = 0;
     private WayPoint target;
     private bool chillin = false;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
+    }
+
+    public void Start2() {
+        foreach (WayPoint w in waypoints) {
+            WorldGenerator wg = FindObjectOfType<WorldGenerator>();
+            w.transform.position = new Vector3(w.transform.position.x, wg.GetWorldHeight(w.transform.position.x, w.transform.position.z), w.transform.position.z);
+        }
         deer = FindObjectsOfType<DeerMovement>();
     }
 
@@ -56,10 +64,8 @@ public class HerdManager : MonoBehaviour
 
     IEnumerator chill() {
         chillin = true;
-        if (target) target.setActive(false);
         waypointIndex = (waypointIndex + 1) % waypoints.Length;
         target = waypoints[waypointIndex];
-        target.setActive(true);
         foreach (DeerMovement d in deer) {
             if (d.getState() != DeerMovement.State.FLEE) {
                 d.idle();
