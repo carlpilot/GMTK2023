@@ -89,11 +89,13 @@ public class AIHunter : MonoBehaviour
     public AudioSource rustlingSFX;
     public AudioSource gunshotSFX;
     public AudioSource runningSFX;
+    private Heartbeat heartbeatManager;
 
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        heartbeatManager = GameObject.Find("HeartbeatSFX").GetComponent<Heartbeat>();
     }
     
     void Start() {
@@ -254,6 +256,9 @@ public class AIHunter : MonoBehaviour
         while (true){
             alertedForTimer += Time.deltaTime;
             // Have we been alerted for too long?
+            if (DeerInView()){
+                heartbeatManager.Alert(this);
+            }
             if (alertedForTimer > alertToActiveTime){
                 if (DeerInView()){
                      // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
@@ -275,6 +280,7 @@ public class AIHunter : MonoBehaviour
             } 
             if (alertedForTimer > alertToIdleTime){
                 if (!DeerInView()){
+                    heartbeatManager.UnAlert(this);
                     StartCoroutine(Tracking());
                     yield break;
                 }
@@ -301,6 +307,7 @@ public class AIHunter : MonoBehaviour
         while (true){
             // Check if the deer is in sight
             if (DeerInView()) {
+                heartbeatManager.Alert(this);
                 lastSeenDeer = 0f;
                 if ((transform.position - deer.transform.position).magnitude <= crawlSniperRange){
                     // Snipe

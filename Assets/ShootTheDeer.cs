@@ -42,7 +42,7 @@ public class ShootTheDeer : MonoBehaviour
             // Scare the deer
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, soundRange);
             foreach (Collider c in hitColliders) {
-                if (c.gameObject.tag == "Deer") {
+                if (c.gameObject.tag == "Deer" && c.gameObject.GetComponent<DeerMovement>() != null) {
                     c.transform.parent.gameObject.GetComponent<DeerMovement>().flee(transform.position);
                 }
             }
