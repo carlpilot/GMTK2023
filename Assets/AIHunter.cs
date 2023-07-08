@@ -30,6 +30,8 @@ public class AIHunter : MonoBehaviour
     public float idleWanderToHideTime = 30f;
     [Tooltip("The maximum time it takes for a hunter to switch from idle hide to idle wander")]
     public float idleHideToWanderTime = 60f;
+    [Tooltip("The speed of the hunter when in idle")]
+    public float idleSpeed = 1f;
 
     [Header("Alert Params")]
     [Tooltip("The time taken for an alert hunter to start actively hunting a visible deer")]
@@ -44,6 +46,11 @@ public class AIHunter : MonoBehaviour
     public float crawlGiveUpTime = 3f;
     [Tooltip("The time taken for a crawling hunter to start sniping at a visible deer")]
     public float crawlSniperRange = 10f;
+    [Tooltip("The speed of the hunter when crawling")]
+    public float crawlSpeed = 0.5f;
+
+    [Header("Tracking Params")]
+    public float trackingSpeed = 0.75f;
 
     [Header("Snipe Params")]
     [Tooltip("The time needed of not seeing a deer to abort a snipe and return to alert")]
@@ -52,6 +59,8 @@ public class AIHunter : MonoBehaviour
     [Header("Chase Params")]
     [Tooltip("The time needed of not seeing a deer to abort a chase and return to alert")]
     public float chaseGiveUpTime = 3f;
+    [Tooltip("The speed of the hunter when chasing")]
+    public float chaseSpeed = 2f;
 
 
     void Awake()
@@ -109,6 +118,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator RandomSearch(){
         state = 1;
         yield return null;
+        agent.speed = idleSpeed;
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
@@ -138,6 +148,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator RandomHide(){
         state = 2;
         yield return null;
+        agent.speed = idleSpeed;
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush();
         // Set destination to closest bush
@@ -209,6 +220,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator Crawling(){
         state = 7;
         yield return null;
+        agent.speed = crawlSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
         // Crawl towards the deers position
@@ -246,6 +258,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator Tracking(){
         state = 4;
         yield return null;
+        agent.speed = trackingSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
         while (true){
@@ -292,6 +305,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator Chasing(){
         state=6;
         yield return null;
+        agent.speed = chaseSpeed;
         agent.isStopped = false;
         var lastSeenDeer = 0f;
         while (true){
