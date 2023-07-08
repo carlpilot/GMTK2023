@@ -136,7 +136,7 @@ public class AIHunter : MonoBehaviour
         RaycastHit hit;
         var start = transform.position + new Vector3(0, 1f, 0);
         var end = deer.transform.position + new Vector3(0, 1f, 0);
-        if (Physics.SphereCast(start, 1f, (end-start).normalized, out hit, 100f, canBlockSightLayerMask))
+        if (Physics.SphereCast(start, 0.2f, (end-start).normalized, out hit, 100f, canBlockSightLayerMask))
         {
             if (hasTaggedParent(hit.collider.gameObject, "Deer"))
             {
