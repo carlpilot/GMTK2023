@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public bool trapped = false;
     public float chanceToFreeFromTrap = 0.05f;
+    public bool crouching = false;
+    public float crouchSpeed = 2f;
+    public float noiseRange = 30f;
+    public float crouchNoiseRange = 15f;
 
     void Awake () {
         cc = GetComponent<CharacterController> ();
@@ -38,8 +42,22 @@ public class PlayerMovement : MonoBehaviour {
             if (Input.GetKey (KeyCode.D)) {
                 moveVec += transform.right;
             }
+            if (Input.GetKey (KeyCode.LeftShift)) {
+                crouching = true;
+            } else {
+                crouching = false;
+            }
 
-            cc.Move (moveVec.normalized * Time.deltaTime * runSpeed);
+            cc.Move (moveVec.normalized * Time.deltaTime * (crouching ? crouchSpeed : runSpeed));
+
+            if (moveVec.magnitude > 0) {
+                Collider[] hitColliders = Physics.OverlapSphere (transform.position, (crouching ? crouchNoiseRange : noiseRange));
+                foreach (Collider c in hitColliders) {
+                    if (c.gameObject.tag == "Deer" && c.transform.parent.gameObject.GetComponent<DeerMovement>() != null) {
+                        c.transform.parent.gameObject.GetComponent<DeerMovement>().flee(transform.position);
+                    }
+                }
+            }
         } else {
             if (Input.GetKeyDown (KeyCode.Space) && Random.value < chanceToFreeFromTrap) trapped = false;
         }
