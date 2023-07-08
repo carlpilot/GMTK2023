@@ -252,6 +252,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12a0965f43bf68b4180ab6f661942a5f,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 12a0965f43bf68b4180ab6f661942a5f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 12a0965f43bf68b4180ab6f661942a5f,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 12a0965f43bf68b4180ab6f661942a5f,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -469,8 +484,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326dd15db6d823c4fac2418958b5c7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 500
-  numChunksPerSide: 9
+  mapWidth: 250
+  numChunksPerSide: 5
   meshResolution: 32
   terrainMaterial: {fileID: 2100000, guid: 88dd8d2b1cff29344b4b80b2df79773e, type: 2}
   worldSeed: 0
@@ -481,13 +496,14 @@ MonoBehaviour:
     persistence: 0.5
     lacunarity: 2.5
   edgeEqualisationRadius: 50
+  originFlatRadius: 25
   spawnables:
   - name: Rocks
     prefabs:
     - {fileID: 2604693855272652133, guid: 83c8e9d4fff05ac45a4b9fc312a441c0, type: 3}
     - {fileID: 8671283949355611876, guid: 201b2119b48777340811ad599b1c1d84, type: 3}
     - {fileID: 6827926224806294653, guid: 6db911069bd90c24bb2e124f9e374f30, type: 3}
-    numToSpawn: 500
+    numToSpawn: 125
     rotationMode: 0
     minSize: 0.25
     maxSize: 4
@@ -495,17 +511,24 @@ MonoBehaviour:
     prefabs:
     - {fileID: 8641493411673777025, guid: fa6b8debc1cd9a843936e2c9543f1657, type: 3}
     - {fileID: 8387336172048307652, guid: cf6fb47595c719b4d89dffcd8387c61f, type: 3}
-    numToSpawn: 2800
+    numToSpawn: 750
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
   - name: Bushes
     prefabs:
     - {fileID: 4992637931821041266, guid: efd85109adebee64085846ee96ac72f6, type: 3}
-    numToSpawn: 400
+    numToSpawn: 100
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
+  - name: Bear Traps
+    prefabs:
+    - {fileID: 1142099830057205866, guid: c8633dd109037654d858b629a92e8a47, type: 3}
+    numToSpawn: 25
+    rotationMode: 1
+    minSize: 1
+    maxSize: 1
 --- !u!4 &1055798629
 Transform:
   m_ObjectHideFlags: 0

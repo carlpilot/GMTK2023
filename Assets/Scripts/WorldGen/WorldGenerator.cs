@@ -19,6 +19,7 @@ public class WorldGenerator : MonoBehaviour {
     public float noiseHeight = 30.0f;
     public Noise noise;
     public float edgeEqualisationRadius = 10.0f;
+    public float originFlatRadius = 25.0f;
     float originWorldHeight = 0.0f;
 
     [Header ("Population")]
@@ -86,7 +87,7 @@ public class WorldGenerator : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast (new Vector3 (Random.Range (-mapWidth / 2f, mapWidth / 2f), 1000f, Random.Range (-mapWidth / 2f, mapWidth / 2f)), Vector3.down, out hit)) {
                 float density = Mathf.Pow (Mathf.PerlinNoise (hit.point.x / 100.0f + num + worldSeed % 1000, hit.point.z / 100.0f - prefabs.Length), 2);
-                if (hit.collider.gameObject.name.Contains ("Chunk") && Random.value < density) {
+                if (hit.collider.gameObject.name.Contains ("Chunk") && Random.value < density && hit.point.x * hit.point.x + hit.point.z * hit.point.z >= originFlatRadius * originFlatRadius) {
                     Quaternion rotation;
                     if (rotationMode == RotationMode.RandomXYZ) rotation = Random.rotationUniform;
                     else if (rotationMode == RotationMode.RandomY) rotation = Quaternion.Euler (Vector3.up * Random.value * 360.0f);
@@ -135,8 +136,10 @@ public class WorldGenerator : MonoBehaviour {
     public float GetWorldHeight (float worldX, float worldZ) {
         //return Mathf.PerlinNoise (worldX / 50.0f + worldSeed, worldZ / 50.0f - worldSeed) * 10.0f;
         float n = (noise.Perlin3D (worldX, worldSeed, worldZ) * 2 - 1.0f) * noiseHeight - originWorldHeight;
-
-        return n * Mathf.Min (1, (mapWidth / 2f - Mathf.Max (Mathf.Abs (worldX), Mathf.Abs (worldZ))) / edgeEqualisationRadius);
+        float edgeLimit = (mapWidth / 2f - Mathf.Max (Mathf.Abs (worldX), Mathf.Abs (worldZ))) / edgeEqualisationRadius;
+        float sqrDistFromOrigin = worldX * worldX + worldZ * worldZ;
+        float originLimit = sqrDistFromOrigin < originFlatRadius * originFlatRadius ? 0 : 0.0003f * (sqrDistFromOrigin - originFlatRadius * originFlatRadius);
+        return n * Mathf.Min (1, Mathf.Min (originLimit, edgeLimit));
     }
 }
 
