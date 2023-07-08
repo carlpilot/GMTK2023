@@ -776,27 +776,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 2799189893399765348, guid: 64e4692a0b0094f28b8fcf975f6965ea,
     type: 3}
-  bulletSpeed: 10
+  bulletSpeed: 50
   canBlockSightLayerMask:
     serializedVersion: 2
     m_Bits: 87
-  idleRange: 50
+  idleRange: 100
   idleWanderToHideTime: 30
   idleHideToWanderTime: 60
-  idleSpeed: 1
-  alertToActiveTime: 3
+  idleSpeed: 2
+  idleSightProbability: 0.5
+  alertToActiveTime: 2
   alertToIdleTime: 6
   crawlOverChaseProbability: 0.8
-  crawlGiveUpTime: 3
-  crawlSniperRange: 10
-  crawlSpeed: 0.5
-  trackingSpeed: 0.75
-  snipeGiveUpTime: 3
+  crawlGiveUpTime: 5
+  crawlSniperRange: 30
+  crawlSpeed: 0.75
+  trackingSpeed: 1.5
+  snipeGiveUpTime: 10
   snipeShotTime: 5
-  snipeSpread: 5
-  chaseGiveUpTime: 3
-  chaseSpeed: 2
-  chaseShotTime: 2
-  chaseSpread: 20
+  snipeSpread: 2
+  chaseGiveUpTime: 4
+  chaseSpeed: 3.5
+  chaseShotTime: 1
+  chaseSpread: 10
   a: {fileID: 904471616840915067}
   b: {fileID: 5847392254641582853}
