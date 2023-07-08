@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3059362783138449417}
   - component: {fileID: 154150574362626095}
+  - component: {fileID: 9096180033559996648}
   m_Layer: 6
   m_Name: AIDeer
   m_TagString: AIDeer
@@ -55,6 +56,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &9096180033559996648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5701413355111786784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936808895e1fe4b82b1271b85d942ede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  timeFleeing: 0
 --- !u!1001 &3410919174539695198
 PrefabInstance:
   m_ObjectHideFlags: 0

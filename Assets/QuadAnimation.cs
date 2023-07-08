@@ -43,9 +43,6 @@ public class QuadAnimation : MonoBehaviour
     
     void Update()
     {
-        transform.Translate(Vector3.right * Time.deltaTime * DEBUGWalkSpeed);
-        transform.Rotate(Vector3.up * Time.deltaTime * 30f);
-
         Vector3 bodyPosDelta = transform.position - lastBodyPos;
         lastBodyPos = transform.position;
         bodyVel = bodyVelDampingAlpha*(bodyPosDelta / Time.deltaTime) + (1-bodyVelDampingAlpha)*bodyVel;
