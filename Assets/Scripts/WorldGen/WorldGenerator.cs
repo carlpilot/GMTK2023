@@ -82,10 +82,11 @@ public class WorldGenerator : MonoBehaviour {
     public int ScatterObjects (GameObject[] prefabs, int num, RotationMode rotationMode, float minSize, float maxSize) {
         int numAttempts = 0;
         int numPlaced = 0;
-        while (numAttempts < num * 2) {
+        while (numAttempts < num * 4) {
             RaycastHit hit;
             if (Physics.Raycast (new Vector3 (Random.Range (-mapWidth / 2f, mapWidth / 2f), 1000f, Random.Range (-mapWidth / 2f, mapWidth / 2f)), Vector3.down, out hit)) {
-                if (hit.collider.gameObject.name.Contains ("Chunk")) {
+                float density = Mathf.Pow (Mathf.PerlinNoise (hit.point.x / 100.0f + num + worldSeed % 1000, hit.point.z / 100.0f - prefabs.Length), 2);
+                if (hit.collider.gameObject.name.Contains ("Chunk") && Random.value < density) {
                     Quaternion rotation;
                     if (rotationMode == RotationMode.RandomXYZ) rotation = Random.rotationUniform;
                     else if (rotationMode == RotationMode.RandomY) rotation = Quaternion.Euler (Vector3.up * Random.value * 360.0f);

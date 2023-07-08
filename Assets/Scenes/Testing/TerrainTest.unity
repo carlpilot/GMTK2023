@@ -495,14 +495,14 @@ MonoBehaviour:
     prefabs:
     - {fileID: 8641493411673777025, guid: fa6b8debc1cd9a843936e2c9543f1657, type: 3}
     - {fileID: 8387336172048307652, guid: cf6fb47595c719b4d89dffcd8387c61f, type: 3}
-    numToSpawn: 4000
+    numToSpawn: 2800
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
   - name: Bushes
     prefabs:
     - {fileID: 4992637931821041266, guid: efd85109adebee64085846ee96ac72f6, type: 3}
-    numToSpawn: 500
+    numToSpawn: 400
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
