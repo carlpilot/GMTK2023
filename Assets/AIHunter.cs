@@ -134,7 +134,9 @@ public class AIHunter : MonoBehaviour
     bool DeerInView(float visibleProbabilityPS = 1f) {
         // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 1f, deer.transform.position - transform.position, out hit, 100f, canBlockSightLayerMask))
+        var start = transform.position + new Vector3(0, 1f, 0);
+        var end = deer.transform.position + new Vector3(0, 1f, 0);
+        if (Physics.SphereCast(start, 0.2f, (end-start).normalized, out hit, 100f, canBlockSightLayerMask))
         {
             if (hasTaggedParent(hit.collider.gameObject, "Deer"))
             {
