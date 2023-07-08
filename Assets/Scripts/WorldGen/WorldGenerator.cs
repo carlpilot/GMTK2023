@@ -22,8 +22,12 @@ public class WorldGenerator : MonoBehaviour {
     [Header ("Population")]
     public int numRocks = 500;
     public GameObject[] rockPrefabs;
+    public int numTrees = 500;
+    public GameObject[] treePrefabs;
 
     Mesh blankMesh;
+
+    public enum RotationMode { RandomXYZ, RandomY, NoRotation }
 
     private void Start () {
         if (worldSeed == 0.0f) worldSeed = Random.Range (-1e6f, 1e6f);
@@ -52,6 +56,7 @@ public class WorldGenerator : MonoBehaviour {
     }
 
     void Populate () {
+        // Rocks
         int numAttempts = 0;
         int numRocksPlaced = 0;
         while (numAttempts < numRocks * 2) {
@@ -67,6 +72,33 @@ public class WorldGenerator : MonoBehaviour {
             numAttempts++;
         }
         print ("Spawned " + numRocksPlaced + " rocks");
+
+        // Trees
+        int numTreesPlaced = ScatterObjects (treePrefabs, numTrees, RotationMode.RandomY, 0.8f, 1.2f);
+        print ("Spawned " + numTreesPlaced + " rocks");
+    }
+
+    public int ScatterObjects (GameObject[] prefabs, int num, RotationMode rotationMode, float minSize, float maxSize) {
+        int numAttempts = 0;
+        int numPlaced = 0;
+        while (numAttempts < num * 2) {
+            RaycastHit hit;
+            if (Physics.Raycast (new Vector3 (Random.Range (-mapWidth / 2f, mapWidth / 2f), 1000f, Random.Range (-mapWidth / 2f, mapWidth / 2f)), Vector3.down, out hit)) {
+                if (hit.collider.gameObject.name.Contains ("Chunk")) {
+                    Quaternion rotation;
+                    if (rotationMode == RotationMode.RandomXYZ) rotation = Random.rotationUniform;
+                    else if (rotationMode == RotationMode.RandomY) rotation = Quaternion.Euler (Vector3.up * Random.value * 360.0f);
+                    else rotation = Quaternion.identity;
+                    GameObject g = Instantiate (prefabs[Random.Range (0, prefabs.Length)], hit.point, rotation);
+                    g.transform.localScale = Vector3.one * Random.Range (minSize, maxSize);
+                    g.transform.parent = hit.transform;
+                    numPlaced++;
+                    if (numPlaced == numRocks) break;
+                }
+            }
+            numAttempts++;
+        }
+        return numPlaced;
     }
 
     public Mesh TransformMesh (Mesh m, (int, int) chunkNum) {
