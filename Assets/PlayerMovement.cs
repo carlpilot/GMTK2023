@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour {
             if (moveVec.magnitude > 0) {
                 Collider[] hitColliders = Physics.OverlapSphere (transform.position, (crouching ? crouchNoiseRange : noiseRange));
                 foreach (Collider c in hitColliders) {
-                    if (c.gameObject.tag == "Deer" && c.transform.parent.gameObject.GetComponent<DeerMovement>() != null) {
+                    if (c.gameObject.tag == "Deer" && c.transform.parent != null && c.transform.parent.gameObject.GetComponent<DeerMovement>() != null) {
                         c.transform.parent.gameObject.GetComponent<DeerMovement>().flee(transform.position);
                     }
                 }
