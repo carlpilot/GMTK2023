@@ -131,7 +131,7 @@ public class AIHunter : MonoBehaviour
         }
     }
 
-    bool DeerInView(float visibleProbabilityPS = 1f) {
+    bool DeerInView(float visibleProbabilityPS = 10000f) {
         // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
         RaycastHit hit;
         var start = transform.position + new Vector3(0, 1f, 0);

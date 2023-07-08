@@ -786,7 +786,7 @@ MonoBehaviour:
   idleSpeed: 1
   alertToActiveTime: 3
   alertToIdleTime: 6
-  crawlOverChaseProbability: 0.5
+  crawlOverChaseProbability: 0.8
   crawlGiveUpTime: 3
   crawlSniperRange: 10
   crawlSpeed: 0.5
