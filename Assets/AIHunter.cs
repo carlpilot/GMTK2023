@@ -22,6 +22,8 @@ public class AIHunter : MonoBehaviour
 
     public float idleRange = 50f;
 
+    Vector3 lastSeenDeerPos;
+
     void Awake()
     {
         deer = GameObject.FindWithTag("Deer");
@@ -32,12 +34,51 @@ public class AIHunter : MonoBehaviour
         StartCoroutine(RandomSearch());
     }
 
+    void Update()
+    {
+        var mat = transform.GetChild(0).GetComponent<Renderer>().material;
+        switch (state)
+        {
+            case 1:
+                mat.color = Color.green;
+                break;
+            case 2:
+                mat.color = Color.blue;
+                break;
+            case 3:
+                mat.color = Color.yellow;
+                break;
+            case 4:
+                mat.color = Color.cyan;
+                break;
+            case 5:
+                mat.color = Color.magenta;
+                break;
+            case 6:
+                mat.color = Color.red;
+                break;
+        }
+    }
+
     bool DeerInView() {
-        return false; // Unfortunately, in a tragic turn of events, the hunter lost his sight in a hunting accident
+        // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position, 1f, deer.transform.position - transform.position, out hit, 100f))
+        {
+            if (hasTaggedParent(hit.collider.gameObject, "Deer"))
+            {
+                lastSeenDeerPos = deer.transform.position;
+                return true;
+            }
+        }
+        return false;
     }
 
     IEnumerator RandomSearch(){
+        state = 1;
+        yield return null;
         var idleSwitchStateTimer = Random.Range(5f, 30f);
+        agent.isStopped = false;
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
 
@@ -62,9 +103,12 @@ public class AIHunter : MonoBehaviour
     }
 
     IEnumerator RandomHide(){
+        state = 2;
+        yield return null;
         var idleSwitchStateTimer = Random.Range(5f, 30f);
         GameObject closestBush = FindClosestBush();
         // Set destination to closest bush
+        agent.isStopped = false;
         agent.SetDestination(closestBush.transform.position);
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
@@ -84,27 +128,34 @@ public class AIHunter : MonoBehaviour
             else if (agent.remainingDistance <= 0.1f)
             {
                 // Crouch
+                agent.isStopped = true;
             }
             yield return null;
         }
     }
 
     IEnumerator Alerted(){
+        state = 3;
+        yield return null;
         var alertedForTimer = 0f;
+        agent.isStopped = true;
         // Crouch
         while (true){
             alertedForTimer += Time.deltaTime;
             // Have we been alerted for too long?
-            if (alertedForTimer > 10f){
-                StartCoroutine(Tracking());
-                yield break;
-            }
-            // If we can see the player
-            else if (DeerInView()) {
-                // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
-                // Else, switch to chasing
-                StartCoroutine(Sniping());
-                yield break;
+            if (alertedForTimer > 3f){
+                if (DeerInView()){
+                     // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
+                    // Else, switch to chasing
+                    StartCoroutine(Sniping());
+                    yield break;
+                }
+            } 
+            if (alertedForTimer > 6f){
+                if (!DeerInView()){
+                    StartCoroutine(Tracking());
+                    yield break;
+                }
             }
             yield return null;
         }
@@ -112,8 +163,10 @@ public class AIHunter : MonoBehaviour
     }
 
     IEnumerator Tracking(){
-        Vector3 lastDeerPosition = deer.transform.position;
-        agent.SetDestination(lastDeerPosition);
+        state = 4;
+        yield return null;
+        agent.isStopped = false;
+        agent.SetDestination(lastSeenDeerPos);
         while (true){
             // Check if the deer is in sight
             if (DeerInView()) {
@@ -131,26 +184,54 @@ public class AIHunter : MonoBehaviour
     }
 
     IEnumerator Sniping(){
-        Debug.Log("Sniping");
-        StartCoroutine(RandomSearch());
-        yield break;
-        // Check if the deer is in sight
-            // If it is, take an accurate shot every n seconds
-        // Else, check if we have not been able to see the deer for a certain amount of time
-            // If it has been too long, switch to alerted
-            // else, do nothing
+        state=5;
+        yield return null;
+        agent.isStopped = true;
+        var lastSeenDeer = 0f;
+        while (true){
+            // Check if the deer is in sight
+            if (DeerInView()) {
+                // If it is, take an accurate shot every n seconds
+                lastSeenDeer = 0f;
+            }
+            // Else, check if we have not been able to see the deer for a certain amount of time
+            else{
+                lastSeenDeer += Time.deltaTime;
+                // If it has been too long, switch to alerted
+                if (lastSeenDeer > 3f){
+                    StartCoroutine(Alerted());
+                    yield break;
+                }
+                // else, do nothing
+            }
+            yield return null;
+        }
     }
 
     IEnumerator Chasing(){
-        Debug.Log("Chasing");
-        StartCoroutine(RandomSearch());
-        yield break;
-        // Run after the deer
-        // Check if the deer is in sight
-            // If it is, take a shot every n seconds
-        // Else, check if we have not been able to see the deer for a certain amount of time
-            // If it has been too long, switch to alerted
-            // else, do nothing
+        state=6;
+        yield return null;
+        agent.isStopped = false;
+        var lastSeenDeer = 0f;
+        while (true){
+            agent.SetDestination(deer.transform.position);
+            // Check if the deer is in sight
+            if (DeerInView()) {
+                // If it is, take an accurate shot every n seconds
+                lastSeenDeer = 0f;
+            }
+            // Else, check if we have not been able to see the deer for a certain amount of time
+            else{
+                lastSeenDeer += Time.deltaTime;
+                // If it has been too long, switch to alerted
+                if (lastSeenDeer > 3f){
+                    StartCoroutine(Alerted());
+                    yield break;
+                }
+                // else, do nothing
+            }
+            yield return null;
+        }
     }
 
     GameObject FindClosestBush(){
@@ -168,6 +249,22 @@ public class AIHunter : MonoBehaviour
             }
         }
         return closestBush;
+    }
+
+    bool hasTaggedParent(GameObject obj, string tag)
+    {
+        if (obj.tag == tag)
+        {
+            return true;
+        }
+        else if (obj.transform.parent != null)
+        {
+            return hasTaggedParent(obj.transform.parent.gameObject, tag);
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

@@ -96,6 +96,7 @@ public class CurrentGameManager : MonoBehaviour
     public void ShootDeer(){
         // We are a hunter and have shot the deer. Switch to deer. Also set to night time
         print("Switching to deer from hunter");
+        if (isSwitchingStates) return;
         StartCoroutine(SwitchStates(true));
     }
 
