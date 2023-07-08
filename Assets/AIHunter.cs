@@ -21,9 +21,38 @@ public class AIHunter : MonoBehaviour
 
     NavMeshAgent agent;
 
-    public float idleRange = 50f;
-
     Vector3 lastSeenDeerPos;
+
+    [Header("Idle Params")]
+    [Tooltip("The range around the player that the hunters idle around")]
+    public float idleRange = 50f;
+    [Tooltip("The maximum time it takes for a hunter to switch from idle wander to idle hide")]
+    public float idleWanderToHideTime = 30f;
+    [Tooltip("The maximum time it takes for a hunter to switch from idle hide to idle wander")]
+    public float idleHideToWanderTime = 60f;
+
+    [Header("Alert Params")]
+    [Tooltip("The time taken for an alert hunter to start actively hunting a visible deer")]
+    public float alertToActiveTime = 3f;
+    [Tooltip("The time taken for an alert hunter to return to idle when there is no visible deer")]
+    public float alertToIdleTime = 6f;
+    [Tooltip("The probability of a hunter to crawl towards the deer instead of running and gunning")]
+    public float crawlOverChaseProbability = 0.5f;
+
+    [Header("Crawl Params")]
+    [Tooltip("The time needed of not seeing a deer to abort a crawl and return to alert")]
+    public float crawlGiveUpTime = 3f;
+    [Tooltip("The time taken for a crawling hunter to start sniping at a visible deer")]
+    public float crawlSniperRange = 10f;
+
+    [Header("Snipe Params")]
+    [Tooltip("The time needed of not seeing a deer to abort a snipe and return to alert")]
+    public float snipeGiveUpTime = 3f;
+
+    [Header("Chase Params")]
+    [Tooltip("The time needed of not seeing a deer to abort a chase and return to alert")]
+    public float chaseGiveUpTime = 3f;
+
 
     void Awake()
     {
@@ -35,8 +64,7 @@ public class AIHunter : MonoBehaviour
         StartCoroutine(RandomSearch());
     }
 
-    void Update()
-    {
+    void Update() {
         var mat = transform.GetChild(0).GetComponent<Renderer>().material;
         switch (state)
         {
@@ -81,7 +109,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator RandomSearch(){
         state = 1;
         yield return null;
-        var idleSwitchStateTimer = Random.Range(5f, 30f);
+        var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
         while (true){
@@ -110,7 +138,7 @@ public class AIHunter : MonoBehaviour
     IEnumerator RandomHide(){
         state = 2;
         yield return null;
-        var idleSwitchStateTimer = Random.Range(5f, 30f);
+        var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush();
         // Set destination to closest bush
         agent.isStopped = false;
@@ -148,7 +176,7 @@ public class AIHunter : MonoBehaviour
         while (true){
             alertedForTimer += Time.deltaTime;
             // Have we been alerted for too long?
-            if (alertedForTimer > 3f){
+            if (alertedForTimer > alertToActiveTime){
                 if (DeerInView()){
                      // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
                     // Else, switch to chasing
@@ -157,7 +185,7 @@ public class AIHunter : MonoBehaviour
                         StartCoroutine(Sniping());
                         yield break;
                     } 
-                    else if (Random.Range(0f, 1f) < 0.5f){
+                    else if (Random.Range(0f, 1f) < crawlOverChaseProbability){
                         StartCoroutine(Crawling());
                         yield break;
                     }
@@ -167,7 +195,7 @@ public class AIHunter : MonoBehaviour
                     }
                 }
             } 
-            if (alertedForTimer > 6f){
+            if (alertedForTimer > alertToIdleTime){
                 if (!DeerInView()){
                     StartCoroutine(Tracking());
                     yield break;
@@ -192,7 +220,7 @@ public class AIHunter : MonoBehaviour
             // Check if the deer is in sight
             if (DeerInView()) {
                 lastSeenDeer = 0f;
-                if ((transform.position - deer.transform.position).magnitude <= 2f){
+                if ((transform.position - deer.transform.position).magnitude <= crawlSniperRange){
                     // Snipe
                     StartCoroutine(Sniping());
                     yield break;
@@ -205,7 +233,7 @@ public class AIHunter : MonoBehaviour
             else{
                 lastSeenDeer += Time.deltaTime;
                 // If it has been too long, switch to alerted
-                if (lastSeenDeer > 3f){
+                if (lastSeenDeer > crawlGiveUpTime){
                     StartCoroutine(Alerted());
                     yield break;
                 }
@@ -251,7 +279,7 @@ public class AIHunter : MonoBehaviour
             else{
                 lastSeenDeer += Time.deltaTime;
                 // If it has been too long, switch to alerted
-                if (lastSeenDeer > 3f){
+                if (lastSeenDeer > snipeGiveUpTime){
                     StartCoroutine(Alerted());
                     yield break;
                 }
@@ -277,7 +305,7 @@ public class AIHunter : MonoBehaviour
             else{
                 lastSeenDeer += Time.deltaTime;
                 // If it has been too long, switch to alerted
-                if (lastSeenDeer > 3f){
+                if (lastSeenDeer > chaseGiveUpTime){
                     StartCoroutine(Alerted());
                     yield break;
                 }
