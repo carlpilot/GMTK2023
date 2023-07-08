@@ -89,8 +89,11 @@ public class AIHunter : MonoBehaviour
     public AudioSource rustlingSFX;
     public AudioSource gunshotSFX;
     public AudioSource runningSFX;
+    public AudioSource reloadSFX;
     private Heartbeat heartbeatManager;
 
+    private float cooldown = 3f;
+    private float cooldownTimer = 2.0f;
 
     void Awake()
     {
@@ -366,13 +369,14 @@ public class AIHunter : MonoBehaviour
         anim.SetBool("isCrouching", true);
         rustlingSFX.Stop();
         runningSFX.Stop();
+        reloadSFX.Play();
         while (true){
             lastShot += Time.deltaTime;
             // Check if the deer is in sight
             if (DeerInView()) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
-                if (lastShot > snipeShotTime){
+                if (lastShot > snipeShotTime && cooldownTimer <= 0f){
                     lastShot = 0f;
                     StartCoroutine(shootBullet(deer.transform.position+Vector3.up*1f, snipeSpread));
                 }
@@ -468,6 +472,9 @@ public class AIHunter : MonoBehaviour
         var bullet = Instantiate(bulletPrefab, from, dir);
         bullets.Add(bullet);
         gunshotSFX.Play();
+        cooldownTimer = cooldown;
+
+        StartCoroutine(ReloadSounds());
 
         var timer = 0f;
         bool justCollided = false;
@@ -499,4 +506,11 @@ public class AIHunter : MonoBehaviour
             Destroy(bullet);
         }
     }
+
+    IEnumerator ReloadSounds()
+    {
+        yield return new WaitForSeconds(2f);
+        reloadSFX.Play();
+    }
+
 }

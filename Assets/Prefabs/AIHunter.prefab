@@ -1063,6 +1063,7 @@ MonoBehaviour:
   rustlingSFX: {fileID: 6299235560381960233}
   gunshotSFX: {fileID: 3882396286693962510}
   runningSFX: {fileID: 2890659170669869585}
+  reloadSFX: {fileID: 1707571491190678548}
 --- !u!1 &8497013418790298299
 GameObject:
   m_ObjectHideFlags: 0
