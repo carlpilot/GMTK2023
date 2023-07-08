@@ -131,15 +131,18 @@ public class AIHunter : MonoBehaviour
         }
     }
 
-    bool DeerInView() {
+    bool DeerInView(float visibleProbabilityPS = 1f) {
         // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, 1f, deer.transform.position - transform.position, out hit, 100f, canBlockSightLayerMask))
         {
             if (hasTaggedParent(hit.collider.gameObject, "Deer"))
             {
-                lastSeenDeerPos = deer.transform.position;
-                return true;
+                if (Random.Range(0f, 1f) < visibleProbabilityPS*Time.deltaTime){
+                    lastSeenDeerPos = deer.transform.position;
+                    return true;
+                }
+                return false;
             }
         }
         return false;
@@ -157,7 +160,7 @@ public class AIHunter : MonoBehaviour
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (DeerInView(0.5f)) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -190,7 +193,7 @@ public class AIHunter : MonoBehaviour
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (DeerInView(0.5f)) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -356,6 +359,7 @@ public class AIHunter : MonoBehaviour
         while (true){
             lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
+            lastSeenDeerPos = deer.transform.position;
             // Check if the deer is in sight
             if (DeerInView()) {
                 // If it is, take an accurate shot every n seconds
@@ -370,7 +374,7 @@ public class AIHunter : MonoBehaviour
                 lastSeenDeer += Time.deltaTime;
                 // If it has been too long, switch to alerted
                 if (lastSeenDeer > chaseGiveUpTime){
-                    StartCoroutine(Alerted());
+                    StartCoroutine(Tracking());
                     yield break;
                 }
                 // else, do nothing
