@@ -20,6 +20,7 @@ public class AIHunter : MonoBehaviour
     GameObject deer;
 
     NavMeshAgent agent;
+    Animator anim;
 
     Vector3 lastSeenDeerPos;
 
@@ -27,6 +28,7 @@ public class AIHunter : MonoBehaviour
     public GameObject bulletPrefab;
     List<GameObject> bullets = new List<GameObject>();
     public float bulletSpeed = 10f;
+    public LayerMask canBlockSightLayerMask;
 
     [Header("Idle Params")]
     [Tooltip("The range around the player that the hunters idle around")]
@@ -75,11 +77,16 @@ public class AIHunter : MonoBehaviour
     [Tooltip("The spread of the chase shots")]
     public float chaseSpread = 20f;
 
+    [Header("Debug")]
+    public Renderer a;
+    public Renderer b;
+
 
     void Awake()
     {
         deer = GameObject.FindWithTag("Deer");
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponentInChildren<Animator>();
     }
     
     void Start() {
@@ -87,29 +94,37 @@ public class AIHunter : MonoBehaviour
     }
 
     void Update() {
-        var mat = transform.GetChild(0).GetComponent<Renderer>().material;
+        var mata = a.material;
+        var matb = b.material;
         switch (state)
         {
             case 1:
-                mat.color = Color.green;
+                mata.color = Color.green;
+                matb.color = Color.green;
                 break;
             case 2:
-                mat.color = Color.blue;
+                mata.color = Color.blue;
+                matb.color = Color.blue;
                 break;
             case 3:
-                mat.color = Color.yellow;
+                mata.color = Color.yellow;
+                matb.color = Color.yellow;
                 break;
             case 4:
-                mat.color = Color.cyan;
+                mata.color = Color.cyan;
+                matb.color = Color.cyan;
                 break;
             case 5:
-                mat.color = Color.magenta;
+                mata.color = Color.magenta;
+                matb.color = Color.magenta;
                 break;
             case 6:
-                mat.color = Color.red;
+                mata.color = Color.red;
+                matb.color = Color.red;
                 break;
             case 7:
-                mat.color = Color.black;
+                mata.color = Color.black;
+                matb.color = Color.black;
                 break;
         }
     }
@@ -117,7 +132,7 @@ public class AIHunter : MonoBehaviour
     bool DeerInView() {
         // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 1f, deer.transform.position - transform.position, out hit, 100f))
+        if (Physics.SphereCast(transform.position, 1f, deer.transform.position - transform.position, out hit, 100f, canBlockSightLayerMask))
         {
             if (hasTaggedParent(hit.collider.gameObject, "Deer"))
             {
@@ -135,6 +150,7 @@ public class AIHunter : MonoBehaviour
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
+        anim.SetBool("isCrouching", false);
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
 
@@ -164,6 +180,7 @@ public class AIHunter : MonoBehaviour
         agent.speed = idleSpeed;
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush();
+        anim.SetBool("isCrouching", false);
         // Set destination to closest bush
         agent.isStopped = false;
         agent.SetDestination(closestBush.transform.position);
@@ -186,6 +203,7 @@ public class AIHunter : MonoBehaviour
             {
                 // Crouch
                 agent.isStopped = true;
+                anim.SetBool("isCrouching", true);
             }
             yield return null;
         }
@@ -196,6 +214,7 @@ public class AIHunter : MonoBehaviour
         yield return null;
         var alertedForTimer = 0f;
         agent.isStopped = true;
+        //anim.SetBool("isCrouching", true); // We will stay as whatever we were before
         // Crouch
         while (true){
             alertedForTimer += Time.deltaTime;
@@ -236,6 +255,7 @@ public class AIHunter : MonoBehaviour
         agent.speed = crawlSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
+        anim.SetBool("isCrouching", true);
         // Crawl towards the deers position
         // If we are within range, switch to snipe
         // If we havent seen the deer for a while, switch to alert
@@ -274,6 +294,7 @@ public class AIHunter : MonoBehaviour
         agent.speed = trackingSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
+        anim.SetBool("isCrouching", false);
         while (true){
             // Check if the deer is in sight
             if (DeerInView()) {
@@ -296,6 +317,7 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = true;
         var lastSeenDeer = 0f;
         var lastShot = 0f;
+        anim.SetBool("isCrouching", true);
         while (true){
             lastShot += Time.deltaTime;
             // Check if the deer is in sight
@@ -328,6 +350,7 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = false;
         var lastSeenDeer = 0f;
         var lastShot = 0f;
+        anim.SetBool("isCrouching", false);
         while (true){
             lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
