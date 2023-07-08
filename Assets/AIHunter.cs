@@ -29,6 +29,7 @@ public class AIHunter : MonoBehaviour
     }
     
     void Start() {
+        StartCoroutine(RandomSearch());
     }
 
     bool DeerInView() {
@@ -62,7 +63,7 @@ public class AIHunter : MonoBehaviour
 
     IEnumerator RandomHide(){
         var idleSwitchStateTimer = Random.Range(5f, 30f);
-        GameObject closestBush = null;
+        GameObject closestBush = FindClosestBush();
         // Set destination to closest bush
         agent.SetDestination(closestBush.transform.position);
         while (true){
@@ -150,6 +151,23 @@ public class AIHunter : MonoBehaviour
         // Else, check if we have not been able to see the deer for a certain amount of time
             // If it has been too long, switch to alerted
             // else, do nothing
+    }
+
+    GameObject FindClosestBush(){
+        // Find the closest gameobject with the tag "Bush"
+        GameObject closestBush = null;
+        foreach (GameObject bush in GameObject.FindGameObjectsWithTag("Bush"))
+        {
+            if (closestBush == null)
+            {
+                closestBush = bush;
+            }
+            else if (Vector3.Distance(transform.position, bush.transform.position) < Vector3.Distance(transform.position, closestBush.transform.position))
+            {
+                closestBush = bush;
+            }
+        }
+        return closestBush;
     }
 
 }
