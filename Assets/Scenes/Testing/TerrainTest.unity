@@ -596,6 +596,13 @@ MonoBehaviour:
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
+  - name: Bushes
+    prefabs:
+    - {fileID: 4992637931821041266, guid: efd85109adebee64085846ee96ac72f6, type: 3}
+    numToSpawn: 500
+    rotationMode: 1
+    minSize: 0.5
+    maxSize: 2
 --- !u!4 &1055798629
 Transform:
   m_ObjectHideFlags: 0
