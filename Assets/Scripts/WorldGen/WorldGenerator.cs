@@ -90,7 +90,7 @@ public class WorldGenerator : MonoBehaviour {
                     else if (rotationMode == RotationMode.RandomY) rotation = Quaternion.Euler (Vector3.up * Random.value * 360.0f);
                     else rotation = Quaternion.identity;
                     GameObject g = Instantiate (prefabs[Random.Range (0, prefabs.Length)], hit.point, rotation);
-                    g.transform.localScale = Vector3.one * Random.Range (minSize, maxSize);
+                    g.transform.localScale *= Random.Range (minSize, maxSize);
                     g.transform.parent = hit.transform;
                     numPlaced++;
                     if (numPlaced == numRocks) break;
