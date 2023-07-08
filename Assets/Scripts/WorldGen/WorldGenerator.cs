@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour {
@@ -24,23 +25,37 @@ public class WorldGenerator : MonoBehaviour {
     public Spawnable[] spawnables;
 
     Mesh blankMesh;
+    Transform chunkParent;
+    int n;
+
+    Dictionary<(int, int), GameObject> chunks = new Dictionary<(int, int), GameObject> ();
 
     public enum RotationMode { RandomXYZ, RandomY, NoRotation }
 
-    private void Start () {
+    private void Awake () {
+        if (numChunksPerSide / 2.0f == numChunksPerSide / 2) {
+            Debug.Log ("Must have an odd number of chunks");
+            numChunksPerSide++;
+        }
+        n = Mathf.FloorToInt (numChunksPerSide / 2f);
         if (worldSeed == 0.0f) worldSeed = Random.Range (-1e6f, 1e6f);
-        Random.InitState ((int)worldSeed);
+        Random.InitState ((int) worldSeed);
         originWorldHeight = GetWorldHeight (0, 0);
+    }
+
+    private void Start () {
         Generate ();
         Populate ();
+        CreateNavMesh ();
     }
 
     void Generate () {
         chunkWidth = mapWidth / numChunksPerSide;
         blankMesh = MeshBuilder.GenerateMesh (meshResolution, chunkWidth);
+        chunkParent = new GameObject ("Chunks").transform;
 
-        for (int i = -4; i <= 4; i++) {
-            for(int j = -4; j <= 4; j++) {
+        for (int i = -n; i <= n; i++) {
+            for(int j = -n; j <= n; j++) {
                 GenerateChunk (i, j);
             }
         }
@@ -53,6 +68,8 @@ public class WorldGenerator : MonoBehaviour {
         g.AddComponent<MeshFilter> ().mesh = TransformMesh (blankMesh, (x, z));
         g.AddComponent<MeshRenderer> ().material = terrainMaterial;
         g.AddComponent<MeshCollider> ().sharedMesh = g.GetComponent<MeshFilter> ().mesh;
+        g.transform.parent = chunkParent;
+        chunks.Add ((x, z), g);
     }
 
     void Populate () {
@@ -83,6 +100,14 @@ public class WorldGenerator : MonoBehaviour {
             numAttempts++;
         }
         return numPlaced;
+    }
+
+    void CreateNavMesh () {
+        //NavMeshSurface nms = chunks[(0, 0)].AddComponent<NavMeshSurface> ();
+        NavMeshSurface nms = new GameObject ("Nav Mesh").AddComponent<NavMeshSurface> ();
+        nms.size = Vector3.one * chunkWidth;
+        nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+        nms.BuildNavMesh ();
     }
 
     public Mesh TransformMesh (Mesh m, (int, int) chunkNum) {
