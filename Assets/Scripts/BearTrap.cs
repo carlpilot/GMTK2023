@@ -22,6 +22,6 @@ public class BearTrap : MonoBehaviour
     }
 
     private void OnTriggerEnter (Collider other) {
-        if (other.tag == "Deer") StartCoroutine (Close ());
+        if (other.tag == "Deer" || other.gameObject.layer == 6) StartCoroutine (Close ());
     }
 }
