@@ -16,6 +16,8 @@ public class CurrentGameManager : MonoBehaviour
     [Header("Deer/Player stuff")]
     [Tooltip("Is the player a deer. If not, the player is a human")]
     public bool isDeer;
+    public GameObject aiDeerPrefab;
+    public GameObject aiHunterPrefab;
 
     [Header("Switching animation")]
     public float maxBloom = 20f;
@@ -31,6 +33,8 @@ public class CurrentGameManager : MonoBehaviour
     Bloom b;
 
     bool isSwitchingStates = false;
+
+    List<GameObject> currentAI = new List<GameObject>();
 
 
     void Awake()
@@ -109,12 +113,20 @@ public class CurrentGameManager : MonoBehaviour
             b.threshold.value = 0f;
         }
 
+        foreach (var ai in currentAI){
+            Destroy(ai);
+        }
+        currentAI.Clear();
+
         if (!toDeer){
             // Switching to hunter
             isDeer = false;
             deer.SetActive(false);
             hunter.SetActive(true);
-            // TODO: Create AI deer
+            for (int i = 0; i < 5; i++){
+                var deer = Instantiate(aiDeerPrefab, new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f)), Quaternion.identity);
+                currentAI.Add(deer);
+            }
             // TODO: move the hunter to a random location
         } else {
             // Switching to deer
@@ -122,7 +134,10 @@ public class CurrentGameManager : MonoBehaviour
             hunter.SetActive(false);
             deer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
-            // TODO: Create AI hunters
+            for (int i = 0; i < 2; i++){
+                var hunter = Instantiate(aiHunterPrefab, new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f)), Quaternion.identity);
+                currentAI.Add(hunter);
+            }
             // TODO: move the deer to a random location
         }
 
