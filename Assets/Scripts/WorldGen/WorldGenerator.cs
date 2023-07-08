@@ -57,20 +57,7 @@ public class WorldGenerator : MonoBehaviour {
 
     void Populate () {
         // Rocks
-        int numAttempts = 0;
-        int numRocksPlaced = 0;
-        while (numAttempts < numRocks * 2) {
-            RaycastHit hit;
-            if (Physics.Raycast(new Vector3(Random.Range(-mapWidth / 2f, mapWidth / 2f), 1000f, Random.Range (-mapWidth / 2f, mapWidth / 2f)), Vector3.down, out hit)) {
-                if(hit.collider.gameObject.name.Contains("Chunk")) {
-                    GameObject g = Instantiate (rockPrefabs[Random.Range (0, rockPrefabs.Length)], hit.point, Random.rotationUniform);
-                    g.transform.parent = hit.transform;
-                    numRocksPlaced++;
-                    if (numRocksPlaced == numRocks) break;
-                }
-            }
-            numAttempts++;
-        }
+        int numRocksPlaced = ScatterObjects (rockPrefabs, numRocks, RotationMode.RandomXYZ, 0.5f, 2.0f);
         print ("Spawned " + numRocksPlaced + " rocks");
 
         // Trees
@@ -93,7 +80,7 @@ public class WorldGenerator : MonoBehaviour {
                     g.transform.localScale *= Random.Range (minSize, maxSize);
                     g.transform.parent = hit.transform;
                     numPlaced++;
-                    if (numPlaced == numRocks) break;
+                    if (numPlaced == num) break;
                 }
             }
             numAttempts++;
