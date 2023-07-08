@@ -49,6 +49,9 @@ public class CurrentGameManager : MonoBehaviour
         deer = GameObject.FindWithTag("Deer");
         hunter = GameObject.FindWithTag("Hunter");
 
+        deer.SetActive(false);
+        hunter.SetActive(false);
+
         StartCoroutine(SwitchStates(false, true));
     }
     
@@ -116,8 +119,8 @@ public class CurrentGameManager : MonoBehaviour
         } else {
             // Switching to deer
             isDeer = true;
-            deer.SetActive(true);
             hunter.SetActive(false);
+            deer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
             // TODO: Create AI hunters
             // TODO: move the deer to a random location
