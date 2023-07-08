@@ -24,6 +24,8 @@ public class AIHunter : MonoBehaviour
 
     Vector3 lastSeenDeerPos;
 
+    [Header("Visibility Params")]
+
     [Header("Bullets")]
     public GameObject bulletPrefab;
     List<GameObject> bullets = new List<GameObject>();
