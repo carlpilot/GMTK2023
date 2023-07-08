@@ -49,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
 		pitch += -Input.GetAxis("Mouse Y")*rotationSpeed;
 		transform.eulerAngles = Vector3.up * yaw;
         camera.localEulerAngles = Vector3.right * pitch;
+
+        if (!cc.isGrounded)
+        {
+            cc.Move(Vector3.down * Time.deltaTime * 9.81f);
+        }
     }
 
     void OnEnable()
