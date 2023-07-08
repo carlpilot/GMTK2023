@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShootTheDeer : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    public AudioSource gunshotSFX;
 
     List<GameObject> bullets = new List<GameObject>();
 
@@ -28,6 +29,7 @@ public class ShootTheDeer : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            gunshotSFX.Play();
             GameObject bullet = Instantiate(bulletPrefab, pm.camera.position, pm.camera.rotation);
             bullets.Add(bullet);
             StartCoroutine(UpdateBullet(bullet));
