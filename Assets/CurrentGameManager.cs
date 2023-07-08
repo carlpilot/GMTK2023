@@ -70,10 +70,6 @@ public class CurrentGameManager : MonoBehaviour
 
         if (isSwitchingStates) return;
 
-        if (Input.GetKeyDown(KeyCode.Space)){
-            StartCoroutine(SwitchStates(!isDeer));
-        }
-
         if  (isDeer) {
             if (inCorrectState()) {
                 // We are a deer and it is night time
