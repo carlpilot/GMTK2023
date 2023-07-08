@@ -93,15 +93,17 @@ public class AIHunter : MonoBehaviour
 
     void Awake()
     {
-        deer = GameObject.FindWithTag("Deer");
         agent = GetComponent<NavMeshAgent>();
     }
     
     void Start() {
+        deer = GameObject.FindWithTag("Deer");
+
         StartCoroutine(RandomSearch());
     }
 
     void Update() {
+        if (!deer) deer = GameObject.FindWithTag("Deer");
         var mata = a.material;
         var matb = b.material;
         switch (state)
