@@ -18,12 +18,10 @@ public class WorldGenerator : MonoBehaviour {
     public float noiseHeight = 30.0f;
     public Noise noise;
     public float edgeEqualisationRadius = 10.0f;
+    float originWorldHeight = 0.0f;
 
     [Header ("Population")]
-    public int numRocks = 500;
-    public GameObject[] rockPrefabs;
-    public int numTrees = 500;
-    public GameObject[] treePrefabs;
+    public Spawnable[] spawnables;
 
     Mesh blankMesh;
 
@@ -32,6 +30,7 @@ public class WorldGenerator : MonoBehaviour {
     private void Start () {
         if (worldSeed == 0.0f) worldSeed = Random.Range (-1e6f, 1e6f);
         Random.InitState ((int)worldSeed);
+        originWorldHeight = GetWorldHeight (0, 0);
         Generate ();
         Populate ();
     }
@@ -56,13 +55,10 @@ public class WorldGenerator : MonoBehaviour {
     }
 
     void Populate () {
-        // Rocks
-        int numRocksPlaced = ScatterObjects (rockPrefabs, numRocks, RotationMode.RandomXYZ, 0.5f, 2.0f);
-        print ("Spawned " + numRocksPlaced + " rocks");
-
-        // Trees
-        int numTreesPlaced = ScatterObjects (treePrefabs, numTrees, RotationMode.RandomY, 0.8f, 1.2f);
-        print ("Spawned " + numTreesPlaced + " rocks");
+        foreach (Spawnable s in spawnables) {
+            int numTreesPlaced = ScatterObjects (s.prefabs, s.numToSpawn, s.rotationMode, s.minSize, s.maxSize);
+            print ("Spawned " + numTreesPlaced + " " + s.name);
+        }
     }
 
     public int ScatterObjects (GameObject[] prefabs, int num, RotationMode rotationMode, float minSize, float maxSize) {
@@ -111,8 +107,18 @@ public class WorldGenerator : MonoBehaviour {
 
     public float GetWorldHeight (float worldX, float worldZ) {
         //return Mathf.PerlinNoise (worldX / 50.0f + worldSeed, worldZ / 50.0f - worldSeed) * 10.0f;
-        float n = (noise.Perlin3D (worldX, worldSeed, worldZ) * 2 - 1.0f) * noiseHeight;
+        float n = (noise.Perlin3D (worldX, worldSeed, worldZ) * 2 - 1.0f) * noiseHeight - originWorldHeight;
 
         return n * Mathf.Min (1, (mapWidth / 2f - Mathf.Max (Mathf.Abs (worldX), Mathf.Abs (worldZ))) / edgeEqualisationRadius);
     }
+}
+
+[System.Serializable]
+public class Spawnable {
+    public string name;
+    public GameObject[] prefabs;
+    public int numToSpawn;
+    public WorldGenerator.RotationMode rotationMode;
+    public float minSize;
+    public float maxSize;
 }

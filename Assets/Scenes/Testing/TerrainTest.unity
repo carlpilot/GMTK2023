@@ -328,7 +328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 266263365}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -487,21 +487,30 @@ MonoBehaviour:
   meshResolution: 32
   terrainMaterial: {fileID: 2100000, guid: 88dd8d2b1cff29344b4b80b2df79773e, type: 2}
   worldSeed: 0
-  noiseHeight: 20
+  noiseHeight: 30
   noise:
     octaves: 5
     scale: 400
     persistence: 0.5
-    lacunarity: 3
+    lacunarity: 2.5
   edgeEqualisationRadius: 50
-  numRocks: 500
-  rockPrefabs:
-  - {fileID: 2604693855272652133, guid: 83c8e9d4fff05ac45a4b9fc312a441c0, type: 3}
-  - {fileID: 8671283949355611876, guid: 201b2119b48777340811ad599b1c1d84, type: 3}
-  - {fileID: 6827926224806294653, guid: 6db911069bd90c24bb2e124f9e374f30, type: 3}
-  numTrees: 5000
-  treePrefabs:
-  - {fileID: 7079677318763192352, guid: 6defb715002497c45b0e5ca060bcfed9, type: 3}
+  spawnables:
+  - name: Rocks
+    prefabs:
+    - {fileID: 2604693855272652133, guid: 83c8e9d4fff05ac45a4b9fc312a441c0, type: 3}
+    - {fileID: 8671283949355611876, guid: 201b2119b48777340811ad599b1c1d84, type: 3}
+    - {fileID: 6827926224806294653, guid: 6db911069bd90c24bb2e124f9e374f30, type: 3}
+    numToSpawn: 500
+    rotationMode: 0
+    minSize: 0.25
+    maxSize: 4
+  - name: Trees
+    prefabs:
+    - {fileID: 8641493411673777025, guid: fa6b8debc1cd9a843936e2c9543f1657, type: 3}
+    numToSpawn: 4000
+    rotationMode: 1
+    minSize: 1
+    maxSize: 3
 --- !u!4 &1055798629
 Transform:
   m_ObjectHideFlags: 0
