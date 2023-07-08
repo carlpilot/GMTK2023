@@ -25,6 +25,7 @@ public class BearTrap : MonoBehaviour {
             StartCoroutine (Close ());
             other.GetComponent<PlayerMovement> ().trapped = true;
             isOpen = false;
+            HintMessage.ShowMessage ("Trapped! Press SPACE repeatedly to try to free yourself");
         }
     }
 }
