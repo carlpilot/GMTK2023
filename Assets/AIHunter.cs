@@ -12,6 +12,7 @@ public class AIHunter : MonoBehaviour
     // 4. Tracking - the hunter was alerted but now it walks to the most recent location
     // 5. Sniping - the hunter has seen the deer it is in a bush, so takes slow accurate shots
     // 6. Chasing - the hunter has seen the deer and is chasing it whilst taking faster but innaccurate shots
+    // 7. Crawling - the hunter is in the open and is moving slowly towards the deer without shooting. After it gets within range, it will start sniping
 
     int state = 1;
 
@@ -57,6 +58,9 @@ public class AIHunter : MonoBehaviour
             case 6:
                 mat.color = Color.red;
                 break;
+            case 7:
+                mat.color = Color.black;
+                break;
         }
     }
 
@@ -79,6 +83,7 @@ public class AIHunter : MonoBehaviour
         yield return null;
         var idleSwitchStateTimer = Random.Range(5f, 30f);
         agent.isStopped = false;
+        agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
 
@@ -106,7 +111,7 @@ public class AIHunter : MonoBehaviour
         state = 2;
         yield return null;
         var idleSwitchStateTimer = Random.Range(5f, 30f);
-        GameObject closestBush = FindClosestBush();
+        var closestBush = FindClosestBush();
         // Set destination to closest bush
         agent.isStopped = false;
         agent.SetDestination(closestBush.transform.position);
@@ -147,8 +152,19 @@ public class AIHunter : MonoBehaviour
                 if (DeerInView()){
                      // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
                     // Else, switch to chasing
-                    StartCoroutine(Sniping());
-                    yield break;
+                    var closestBush = FindClosestBush();
+                    if ((transform.position - closestBush.transform.position).magnitude < 1f) {
+                        StartCoroutine(Sniping());
+                        yield break;
+                    } 
+                    else if (Random.Range(0f, 1f) < 0.5f){
+                        StartCoroutine(Crawling());
+                        yield break;
+                    }
+                    else {
+                        StartCoroutine(Chasing());
+                        yield break;
+                    }
                 }
             } 
             if (alertedForTimer > 6f){
@@ -160,6 +176,43 @@ public class AIHunter : MonoBehaviour
             yield return null;
         }
 
+    }
+
+    IEnumerator Crawling(){
+        state = 7;
+        yield return null;
+        agent.isStopped = false;
+        agent.SetDestination(lastSeenDeerPos);
+        // Crawl towards the deers position
+        // If we are within range, switch to snipe
+        // If we havent seen the deer for a while, switch to alert
+
+        var lastSeenDeer = 0f;
+        while (true){
+            // Check if the deer is in sight
+            if (DeerInView()) {
+                lastSeenDeer = 0f;
+                if ((transform.position - deer.transform.position).magnitude <= 2f){
+                    // Snipe
+                    StartCoroutine(Sniping());
+                    yield break;
+                }
+                else{
+                    agent.SetDestination(lastSeenDeerPos);
+                }
+            }
+            // Else, check if we have not been able to see the deer for a certain amount of time
+            else{
+                lastSeenDeer += Time.deltaTime;
+                // If it has been too long, switch to alerted
+                if (lastSeenDeer > 3f){
+                    StartCoroutine(Alerted());
+                    yield break;
+                }
+                // else, do nothing
+            }
+            yield return null;
+        }
     }
 
     IEnumerator Tracking(){
