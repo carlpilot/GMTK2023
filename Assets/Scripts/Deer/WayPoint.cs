@@ -14,16 +14,6 @@ public class WayPoint : MonoBehaviour
         GetComponent<MeshRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (leader != null) {
-            if (Vector3.Distance(transform.position, leader.transform.position) < 1) {
-                leader.setNewTarget(this);
-            }
-        }
-    }
-
     public void setActive(bool active) {
         GetComponent<MeshRenderer>().enabled = active;
     }

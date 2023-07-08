@@ -6,6 +6,7 @@ public class HerdManager : MonoBehaviour
 {
 
     public WayPoint[] waypoints;
+
     private DeerMovement[] deer;
     private int waypointIndex = 0;
     private WayPoint target;
@@ -24,16 +25,31 @@ public class HerdManager : MonoBehaviour
         if (!chillin) {
             checkIdle();
         }
+        int idle = 0;
+        int flee = 0;
+        int wander = 0;
+        int follow = 0;
+        foreach (DeerMovement d in deer) {
+            if (d.getState() == DeerMovement.State.IDLE) idle ++;
+            if (d.getState() == DeerMovement.State.FLEE) flee ++;
+            if (d.getState() == DeerMovement.State.WANDER) wander ++;
+            if (d.getState() == DeerMovement.State.FOLLOW) follow ++;
+        }
+        print("flee: " + flee + "idle: " + idle + " wander: " + wander + " follow: " + follow);
     }
 
     void checkIdle() {
         int total = 0;
+        int totalNotFleeing = 0;
         foreach (DeerMovement d in deer) {
             if (d.getState() == DeerMovement.State.IDLE || d.getState() == DeerMovement.State.WANDER) {
                 total ++;
             }
+            if (d.getState() != DeerMovement.State.FLEE) {
+                totalNotFleeing ++;
+            }
         }
-        if (total == deer.Length) {
+        if (total == totalNotFleeing) {
             StartCoroutine(chill());
         }
     }
@@ -45,11 +61,15 @@ public class HerdManager : MonoBehaviour
         target = waypoints[waypointIndex];
         target.setActive(true);
         foreach (DeerMovement d in deer) {
-            d.setState(DeerMovement.State.IDLE);
+            if (d.getState() != DeerMovement.State.FLEE) {
+                d.idle();
+            }
         }
-        yield return new WaitForSeconds(Random.Range(10, 30));
+        yield return new WaitForSeconds(5);
         foreach (DeerMovement d in deer) {
-            d.setNewTarget(target);
+            if (d.getState() != DeerMovement.State.FLEE) {
+                d.follow(target);
+            }
         }
         chillin = false;
     }
