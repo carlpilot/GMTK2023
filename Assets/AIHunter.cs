@@ -41,6 +41,8 @@ public class AIHunter : MonoBehaviour
     public float idleHideToWanderTime = 60f;
     [Tooltip("The speed of the hunter when in idle")]
     public float idleSpeed = 1f;
+    [Tooltip("The probability of then hunter seeing the deer per second when in idle")]
+    public float idleSightProbability = 0.5f;
 
     [Header("Alert Params")]
     [Tooltip("The time taken for an alert hunter to start actively hunting a visible deer")]
@@ -82,6 +84,11 @@ public class AIHunter : MonoBehaviour
     [Header("Debug")]
     public Renderer a;
     public Renderer b;
+
+    [Header("Sound")]
+    public AudioSource rustlingSFX;
+    public AudioSource gunshotSFX;
+    public AudioSource runningSFX;
 
 
     void Awake()
@@ -131,20 +138,33 @@ public class AIHunter : MonoBehaviour
         }
     }
 
-    bool DeerInView(float visibleProbabilityPS = 10000f) {
-        // Spherecast towards teh deer - the bigger the sphere the easier it is for the deer to hide
+    bool DeerInView(float visibleProbabilityPS = -1) {
         RaycastHit hit;
         var start = transform.position + new Vector3(0, 1f, 0);
         var end = deer.transform.position + new Vector3(0, 1f, 0);
-        if (Physics.SphereCast(start, 0.2f, (end-start).normalized, out hit, 100f, canBlockSightLayerMask))
+        var dir = (end-start).normalized;
+        if (Physics.Raycast(start, dir, out hit, 100f, canBlockSightLayerMask))
         {
             if (hasTaggedParent(hit.collider.gameObject, "Deer"))
             {
-                if (Random.Range(0f, 1f) < visibleProbabilityPS*Time.deltaTime){
+                lastSeenDeerPos = deer.transform.position;
+                Debug.DrawLine(start, hit.point, Color.red);
+                return true;
+                if (visibleProbabilityPS == -1){
+                    if (Random.Range(0f, 1f) < visibleProbabilityPS*Time.deltaTime){
+                        lastSeenDeerPos = deer.transform.position;
+                        Debug.DrawLine(start, hit.point, Color.red);
+                        return true;
+                    }
+                    Debug.DrawLine(start, hit.point, Color.yellow);
+                    return false;
+                } else{
                     lastSeenDeerPos = deer.transform.position;
+                    Debug.DrawLine(start, hit.point, Color.red);
                     return true;
                 }
-                return false;
+            } else{
+                Debug.DrawLine(start, hit.point, Color.green);
             }
         }
         return false;
@@ -154,6 +174,8 @@ public class AIHunter : MonoBehaviour
         state = 1;
         yield return null;
         agent.speed = idleSpeed;
+        rustlingSFX.Stop();
+        runningSFX.Play();
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
@@ -162,7 +184,7 @@ public class AIHunter : MonoBehaviour
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView(0.5f)) {
+            if (DeerInView(idleSightProbability)) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -185,6 +207,8 @@ public class AIHunter : MonoBehaviour
         state = 2;
         yield return null;
         agent.speed = idleSpeed;
+        rustlingSFX.Stop();
+        runningSFX.Play();
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush();
         anim.SetBool("isCrouching", false);
@@ -195,7 +219,7 @@ public class AIHunter : MonoBehaviour
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView(0.5f)) {
+            if (DeerInView(idleSightProbability)) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -210,6 +234,7 @@ public class AIHunter : MonoBehaviour
             {
                 // Crouch
                 agent.isStopped = true;
+                runningSFX.Stop();
                 anim.SetBool("isCrouching", true);
             }
             yield return null;
@@ -221,6 +246,8 @@ public class AIHunter : MonoBehaviour
         yield return null;
         var alertedForTimer = 0f;
         agent.isStopped = true;
+        rustlingSFX.Stop();
+        runningSFX.Stop();
         //anim.SetBool("isCrouching", true); // We will stay as whatever we were before
         // Crouch
         while (true){
@@ -263,6 +290,8 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
         anim.SetBool("isCrouching", true);
+        rustlingSFX.Play();
+        runningSFX.Stop();
         // Crawl towards the deers position
         // If we are within range, switch to snipe
         // If we havent seen the deer for a while, switch to alert
@@ -302,6 +331,8 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
         anim.SetBool("isCrouching", false);
+        rustlingSFX.Stop();
+        runningSFX.Play();
         while (true){
             // Check if the deer is in sight
             if (DeerInView()) {
@@ -325,6 +356,8 @@ public class AIHunter : MonoBehaviour
         var lastSeenDeer = 0f;
         var lastShot = 0f;
         anim.SetBool("isCrouching", true);
+        rustlingSFX.Stop();
+        runningSFX.Stop();
         while (true){
             lastShot += Time.deltaTime;
             // Check if the deer is in sight
@@ -357,6 +390,8 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = false;
         var lastSeenDeer = 0f;
         var lastShot = 0f;
+        rustlingSFX.Stop();
+        runningSFX.Play();
         anim.SetBool("isCrouching", false);
         while (true){
             lastShot += Time.deltaTime;
@@ -424,6 +459,7 @@ public class AIHunter : MonoBehaviour
         dir = Quaternion.Euler(dir.eulerAngles + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0f));
         var bullet = Instantiate(bulletPrefab, from, dir);
         bullets.Add(bullet);
+        gunshotSFX.Play();
 
         var timer = 0f;
         bool justCollided = false;

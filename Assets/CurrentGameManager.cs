@@ -27,6 +27,11 @@ public class CurrentGameManager : MonoBehaviour
     [Header("Sun nonsense")]
     public float sunAxisAngle = 45f;
 
+    [Header("Night Time Visuals")]
+    public AnimationCurve fogDensityCurve;
+    public Gradient fogColorCurve;
+    public Gradient sunColorCurve;
+
     GameObject deer;
     GameObject hunter;
 
@@ -67,6 +72,10 @@ public class CurrentGameManager : MonoBehaviour
         Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
         Vector3 sunDirectionNow = Quaternion.Euler(0, 0, -gt*360f) * sunDirectionMorning;
         GameObject.FindWithTag("Sun").transform.rotation = Quaternion.LookRotation(sunDirectionNow, Vector3.up);
+
+        RenderSettings.fogDensity = fogDensityCurve.Evaluate(gt);
+        RenderSettings.fogColor = fogColorCurve.Evaluate(gt);
+        GameObject.FindWithTag("Sun").GetComponent<Light>().color = sunColorCurve.Evaluate(gt);
 
         if (isSwitchingStates) return;
 
@@ -138,8 +147,8 @@ public class CurrentGameManager : MonoBehaviour
             hunter.SetActive(false);
             deer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
-            for (int i = 0; i < 10; i++){
-                var hunter = Instantiate(aiHunterPrefab, new Vector3(Random.Range(-50, 50f), 0f, Random.Range(-50, 50f)), Quaternion.identity);
+            for (int i = 0; i < 3; i++){
+                var hunter = Instantiate(aiHunterPrefab, new Vector3(Random.Range(-150, 150f), 0f, Random.Range(-150, 150f)), Quaternion.identity);
                 currentAI.Add(hunter);
             }
             // TODO: move the deer to a random location
