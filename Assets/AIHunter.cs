@@ -20,7 +20,7 @@ public class AIHunter : MonoBehaviour
     GameObject deer;
 
     NavMeshAgent agent;
-    Animator anim;
+    public Animator anim;
 
     Vector3 lastSeenDeerPos;
 
@@ -95,7 +95,6 @@ public class AIHunter : MonoBehaviour
     {
         deer = GameObject.FindWithTag("Deer");
         agent = GetComponent<NavMeshAgent>();
-        anim = GetComponentInChildren<Animator>();
     }
     
     void Start() {
