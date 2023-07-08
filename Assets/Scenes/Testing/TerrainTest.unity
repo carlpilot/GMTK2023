@@ -499,6 +499,9 @@ MonoBehaviour:
   - {fileID: 2604693855272652133, guid: 83c8e9d4fff05ac45a4b9fc312a441c0, type: 3}
   - {fileID: 8671283949355611876, guid: 201b2119b48777340811ad599b1c1d84, type: 3}
   - {fileID: 6827926224806294653, guid: 6db911069bd90c24bb2e124f9e374f30, type: 3}
+  numTrees: 5000
+  treePrefabs:
+  - {fileID: 7079677318763192352, guid: 6defb715002497c45b0e5ca060bcfed9, type: 3}
 --- !u!4 &1055798629
 Transform:
   m_ObjectHideFlags: 0
