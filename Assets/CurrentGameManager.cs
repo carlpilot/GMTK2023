@@ -100,6 +100,13 @@ public class CurrentGameManager : MonoBehaviour
         StartCoroutine(SwitchStates(true));
     }
 
+    public void ShootPlayerDeer(){
+        // We are a hunter and have shot the deer. Switch to deer. Also set to night time
+        print("Player Dead");
+        if (isSwitchingStates) return;
+        deer.SetActive(false);
+    }
+
     IEnumerator SwitchStates(bool toDeer, bool startWhite = false){
         isSwitchingStates = true;
         if (!startWhite){

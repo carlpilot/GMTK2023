@@ -23,6 +23,11 @@ public class AIHunter : MonoBehaviour
 
     Vector3 lastSeenDeerPos;
 
+    [Header("Bullets")]
+    public GameObject bulletPrefab;
+    List<GameObject> bullets = new List<GameObject>();
+    public float bulletSpeed = 10f;
+
     [Header("Idle Params")]
     [Tooltip("The range around the player that the hunters idle around")]
     public float idleRange = 50f;
@@ -55,12 +60,20 @@ public class AIHunter : MonoBehaviour
     [Header("Snipe Params")]
     [Tooltip("The time needed of not seeing a deer to abort a snipe and return to alert")]
     public float snipeGiveUpTime = 3f;
+    [Tooltip("The time taken between sniper shots")]
+    public float snipeShotTime = 5f;
+    [Tooltip("The spread of the sniper shots")]
+    public float snipeSpread = 5f;
 
     [Header("Chase Params")]
     [Tooltip("The time needed of not seeing a deer to abort a chase and return to alert")]
     public float chaseGiveUpTime = 3f;
     [Tooltip("The speed of the hunter when chasing")]
     public float chaseSpeed = 2f;
+    [Tooltip("The time taken between chase shots")]
+    public float chaseShotTime = 2;
+    [Tooltip("The spread of the chase shots")]
+    public float chaseSpread = 20f;
 
 
     void Awake()
@@ -282,11 +295,17 @@ public class AIHunter : MonoBehaviour
         yield return null;
         agent.isStopped = true;
         var lastSeenDeer = 0f;
+        var lastShot = 0f;
         while (true){
+            lastShot += Time.deltaTime;
             // Check if the deer is in sight
             if (DeerInView()) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
+                if (lastShot > snipeShotTime){
+                    lastShot = 0f;
+                    StartCoroutine(shootBullet(deer.transform.position+Vector3.up*1f, snipeSpread));
+                }
             }
             // Else, check if we have not been able to see the deer for a certain amount of time
             else{
@@ -308,12 +327,18 @@ public class AIHunter : MonoBehaviour
         agent.speed = chaseSpeed;
         agent.isStopped = false;
         var lastSeenDeer = 0f;
+        var lastShot = 0f;
         while (true){
+            lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
             // Check if the deer is in sight
             if (DeerInView()) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
+                if (lastShot > chaseShotTime){
+                    lastShot = 0f;
+                    StartCoroutine(shootBullet(deer.transform.position+Vector3.up*1f, chaseSpread));
+                }
             }
             // Else, check if we have not been able to see the deer for a certain amount of time
             else{
@@ -362,4 +387,41 @@ public class AIHunter : MonoBehaviour
         }
     }
 
+    IEnumerator shootBullet(Vector3 at, float spread){
+        var from = transform.position + Vector3.up * 1.5f;
+        var dir = Quaternion.LookRotation((at-from).normalized);
+        dir = Quaternion.Euler(dir.eulerAngles + new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0f));
+        var bullet = Instantiate(bulletPrefab, from, dir);
+        bullets.Add(bullet);
+
+        var timer = 0f;
+        bool justCollided = false;
+        while (timer < 10f)
+        {
+            bullet.transform.position += bullet.transform.forward * bulletSpeed * Time.deltaTime;
+            timer += Time.deltaTime;
+
+            if (justCollided) break;
+
+            // Check for bullet collisions using raycasts
+            RaycastHit hit;
+            if (Physics.Raycast(bullet.transform.position, bullet.transform.forward, out hit, bulletSpeed * Time.deltaTime))
+            {
+                if (hasTaggedParent(hit.collider.gameObject, "Deer"))
+                {
+                    // Hit the deer
+                    Debug.Log("Hit the player deer");
+                    GameObject.Find("GameManager").GetComponent<CurrentGameManager>().ShootPlayerDeer();
+                }
+                justCollided = true;
+            }
+
+            yield return null;
+        }
+        if (bullets.Contains(bullet))
+        {
+            bullets.Remove(bullet);
+            Destroy(bullet);
+        }
+    }
 }

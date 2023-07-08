@@ -264,13 +264,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bda76e64843fb17c9810034e55d36ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2799189893399765348, guid: 64e4692a0b0094f28b8fcf975f6965ea,
+    type: 3}
+  bulletSpeed: 10
   idleRange: 50
   idleWanderToHideTime: 30
   idleHideToWanderTime: 60
+  idleSpeed: 1
   alertToActiveTime: 3
   alertToIdleTime: 6
   crawlOverChaseProbability: 0.5
   crawlGiveUpTime: 3
   crawlSniperRange: 10
+  crawlSpeed: 0.5
+  trackingSpeed: 0.75
   snipeGiveUpTime: 3
   chaseGiveUpTime: 3
+  chaseSpeed: 2
