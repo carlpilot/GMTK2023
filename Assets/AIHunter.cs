@@ -75,6 +75,7 @@ public class AIHunter : MonoBehaviour
     public float chaseShotTime = 2;
     [Tooltip("The spread of the chase shots")]
     public float chaseSpread = 20f;
+    public float minChaseDist = 3f;
 
     [Header("Noticing Deer")]
     public float idleNoticeMaxTime = 10f;
@@ -419,6 +420,7 @@ public class AIHunter : MonoBehaviour
         anim.SetInteger("animState", 2); // Chase
         SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
+            agent.isStopped = (transform.position - deer.transform.position).magnitude <= minChaseDist;
             lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
             lastSeenDeerPos = deer.transform.position;
