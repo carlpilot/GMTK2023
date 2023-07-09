@@ -39,6 +39,10 @@ public class CurrentGameManager : MonoBehaviour
     GameObject deer;
     GameObject hunter;
 
+    public Material deerMat1;
+    public Material deerMat2;
+    public Material deerMat3;
+
     Bloom b;
 
     bool isSwitchingStates = false;
@@ -152,10 +156,20 @@ public class CurrentGameManager : MonoBehaviour
             isDeer = false;
             deer.SetActive(false);
             hunter.SetActive(true);
-            for (int i = 0; i < 5; i++){
+            for (int i = 0; i < 8; i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(Random.Range(-50, 50f), 0f, Random.Range(-50, 50f)), Quaternion.identity);
                 currentAI.Add(deer);
                 deer.transform.parent = transform;
+
+                float v = Random.value;
+                if (v < 0.3f) {
+                    deer.GetComponentInChildren<Renderer>().material = deerMat1;
+                } else if (v <= 0.7f) {
+                    deer.GetComponentInChildren<Renderer>().material = deerMat2;
+                } else {
+                    deer.GetComponentInChildren<Renderer>().material = deerMat3;
+                    transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+                }
             }
             gameObject.GetComponent<HerdManager>().Start2();
             // TODO: move the hunter to a random location
