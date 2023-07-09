@@ -10054,7 +10054,7 @@ GameObject:
   - component: {fileID: 4203471808431374919}
   - component: {fileID: 824077706795299031}
   - component: {fileID: 1014881734615520323}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CageDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10152,6 +10152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDeerCamera: {fileID: 0}
+  openAngle: 110
+  openTime: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &3848135659455296832
 GameObject:
   m_ObjectHideFlags: 0
