@@ -296,7 +296,7 @@ MonoBehaviour:
   crouchNoiseRange: 15
   sprintNoiseRange: 50
   chanceToFreeFromTrap: 0.05
-  exhaustionVingetteMinIntensity: 0
+  exhaustionVingetteMinIntensity: 0.2
   exhaustionVingetteMaxIntensity: 1
   sprintTime: 5
   sprintCooldown: 5
