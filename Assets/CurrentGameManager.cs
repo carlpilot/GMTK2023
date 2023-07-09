@@ -252,19 +252,6 @@ public class CurrentGameManager : MonoBehaviour
     }
 
     public int CalcNumHunterToSpawn(){
-        switch (currentDay){
-            case 0:
-                return 2;
-            case 1:
-                return 3;
-            case 3:
-                return 4;
-            case 4:
-                return 5;
-            case 5:
-                return 6;
-            default:
-                return 7;
-        }
+        return 0;
     }
 }
