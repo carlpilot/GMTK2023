@@ -94,6 +94,7 @@ public class AIHunter : MonoBehaviour
 
     private float cooldown = 3f;
     private float cooldownTimer = 2.0f;
+    private float noiseRange = 40f;
 
     void Awake()
     {
@@ -109,6 +110,15 @@ public class AIHunter : MonoBehaviour
 
     void Update() {
         if (!deer) deer = GameObject.FindWithTag("Deer");
+
+        float distance = (deer.transform.position - transform.position).magnitude;
+        float volume = 0;
+        if (distance <= noiseRange) {
+            volume = 1 - distance / noiseRange;
+        }
+        print("volume: " + volume);
+        runningSFX.volume = volume;
+
         var mata = a.material;
         var matb = b.material;
         switch (state)
