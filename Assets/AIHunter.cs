@@ -104,6 +104,8 @@ public class AIHunter : MonoBehaviour
     float currentNoticeMaxTime = 1f;
     float noticeTimer = 0f;
 
+    public int currentStealthLevel = 0;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -142,9 +144,9 @@ public class AIHunter : MonoBehaviour
             float visibilityMultiplier = 1f;
             // If the player is in a bush, they are harder to see
             var closestPlayerBush = FindClosestBush(deer.transform.position);
-            if ((closestPlayerBush.transform.position - deer.transform.position).magnitude < 2f) visibilityMultiplier *= bushVisibilityMultiplier;
-            if (deer.GetComponent<PlayerMovement>().isCrouching) visibilityMultiplier *= crouchVisibilityMultiplier;
-            if (deer.GetComponent<PlayerMovement>().isSprinting) visibilityMultiplier *= sprintVisibilityMultiplier;
+            if ((closestPlayerBush.transform.position - deer.transform.position).magnitude < 2f) { visibilityMultiplier *= bushVisibilityMultiplier; currentStealthLevel ++;}
+            if (deer.GetComponent<PlayerMovement>().isCrouching) {visibilityMultiplier *= crouchVisibilityMultiplier; currentStealthLevel ++;}
+            if (deer.GetComponent<PlayerMovement>().isSprinting) {visibilityMultiplier *= sprintVisibilityMultiplier; currentStealthLevel --;}
 
             noticeTimer -= Time.deltaTime*visibilityMultiplier;
             RaycastHit hit;
