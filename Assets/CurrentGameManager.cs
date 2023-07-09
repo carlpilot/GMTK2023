@@ -12,6 +12,7 @@ public class CurrentGameManager : MonoBehaviour
     public float dayDuration = 60f;
     [Tooltip("The current game time in days. 1 means 24 hours")]
     public float gameTime;
+    public int currentDay = 1;
 
     [Header("Deer/Player stuff")]
     [Tooltip("Is the player a deer. If not, the player is a human")]
@@ -95,6 +96,7 @@ public class CurrentGameManager : MonoBehaviour
                 // We are a deer and survived the night. Switch to hunter
                 print("Switching to hunter from deer"); 
                 StartCoroutine(SwitchStates(false));
+                currentDay++;
             }
         } else {
             if (inCorrectState()) {
@@ -159,7 +161,7 @@ public class CurrentGameManager : MonoBehaviour
             isDeer = false;
             deer.SetActive(false);
             hunter.SetActive(true);
-            for (int i = 0; i < 8; i++){
+            for (int i = 0; i < CalcNumDeerToSpawn(); i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f)), Quaternion.identity);
                 currentAI.Add(deer);
                 deer.transform.parent = transform;
@@ -183,7 +185,7 @@ public class CurrentGameManager : MonoBehaviour
             hunter.SetActive(false);
             deer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
-            for (int i = 0; i < 3; i++){
+            for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
                 while (x < 10 && x > -10) x = Random.Range(-20, 20);
                 float z = 0;
@@ -218,6 +220,36 @@ public class CurrentGameManager : MonoBehaviour
         else
         {
             return (gt >= 0f && gt < 0.5f);
+        }
+    }
+
+    public int CalcNumDeerToSpawn(){
+        switch (currentDay){
+            case 0:
+                return 15;
+            case 1:
+                return 12;
+            case 3:
+                return 10;
+            default:
+                return 8;
+        }
+    }
+
+    public int CalcNumHunterToSpawn(){
+        switch (currentDay){
+            case 0:
+                return 2;
+            case 1:
+                return 3;
+            case 3:
+                return 4;
+            case 4:
+                return 5;
+            case 5:
+                return 6;
+            default:
+                return 7;
         }
     }
 }
