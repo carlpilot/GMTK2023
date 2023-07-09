@@ -82,7 +82,7 @@ public class CurrentGameManager : MonoBehaviour
         hunter.SetActive(false);
         babyDeer.SetActive(false);
 
-        StartCoroutine(SwitchStates(false, true));
+        StartCoroutine(SwitchStates(false, true, 1));
     }
     
     void Update()
@@ -145,7 +145,8 @@ public class CurrentGameManager : MonoBehaviour
         nightMusic.Play();
     }
 
-    IEnumerator SwitchStates(bool toDeer, bool startWhite = false){
+    IEnumerator SwitchStates(bool toDeer, bool startWhite = false, int forceDay = -1){
+        print("Switching States");
         isSwitchingStates = true;
         if (!startWhite){
             for (float i = 0; i <= animationTime; i += Time.deltaTime){
@@ -178,6 +179,7 @@ public class CurrentGameManager : MonoBehaviour
             babyDeer.SetActive(false);
             spawnObj.gameObject.SetActive(false);
             currentDay++;
+            if (forceDay != -1) currentDay = forceDay;
             gameTime = 0f;
             for (int i = 0; i < CalcNumDeerToSpawn(); i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f)), Quaternion.identity);
@@ -209,7 +211,7 @@ public class CurrentGameManager : MonoBehaviour
             }
         } else {
             // Switching to deer
-
+            if (forceDay != -1) currentDay = forceDay;
             WayPoint[] waypoints = gameObject.GetComponent<HerdManager>().Start2();
             WayPoint randomWP = waypoints[Random.Range(0, waypoints.Length)];
 
@@ -226,6 +228,7 @@ public class CurrentGameManager : MonoBehaviour
             deer.GetComponent<PlayerMovement>().SetSpawn(spawn);
             spawnObj.gameObject.SetActive(true);
 
+            print("Adding hunters");
             for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
                 while (x < 10 && x > -10) x = Random.Range(-20, 20);
@@ -283,10 +286,11 @@ public class CurrentGameManager : MonoBehaviour
     }
 
     public int CalcNumHunterToSpawn(){
+        print("CurrentDay" + currentDay);
         switch (currentDay){
-            case 0:
-                return 2;
             case 1:
+                return 2;
+            case 2:
                 return 3;
             case 3:
                 return 5;

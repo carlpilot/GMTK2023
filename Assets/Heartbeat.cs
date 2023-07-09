@@ -28,7 +28,7 @@ public class Heartbeat : MonoBehaviour
     }
 
     public void Alert(AIHunter hunter) {
-        print("alert");
+        //print("alert");
         if (nearestHunter == hunter) {
             return;
         }
