@@ -66,7 +66,8 @@ public class CurrentGameManager : MonoBehaviour
     
     void Update()
     {
-        gameTime += Time.deltaTime / dayDuration;
+        gameTime +=Time.deltaTime / dayDuration;
+        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f));
 
         float gt = Mathf.Repeat(gameTime, 1f);
         Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
@@ -91,9 +92,7 @@ public class CurrentGameManager : MonoBehaviour
             if (inCorrectState()) {
                 // We are a hunter and it is day time
             } else{
-                // We are a hunter but ran out of time. End the game
-                print("Game Over - ran out of time as hunter");
-                hunter.SetActive(false);
+                // No more hunter time limit
             }
         }
     }

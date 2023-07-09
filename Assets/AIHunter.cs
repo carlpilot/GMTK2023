@@ -22,9 +22,6 @@ public class AIHunter : MonoBehaviour
     NavMeshAgent agent;
     public Animator anim;
 
-    Vector3 lastSeenDeerPos;
-
-    [Header("Visibility Params")]
 
     [Header("Bullets")]
     public GameObject bulletPrefab;
@@ -41,8 +38,6 @@ public class AIHunter : MonoBehaviour
     public float idleHideToWanderTime = 60f;
     [Tooltip("The speed of the hunter when in idle")]
     public float idleSpeed = 1f;
-    [Tooltip("The probability of then hunter seeing the deer per second when in idle")]
-    public float idleSightProbability = 0.5f;
 
     [Header("Alert Params")]
     [Tooltip("The time taken for an alert hunter to start actively hunting a visible deer")]
@@ -81,9 +76,10 @@ public class AIHunter : MonoBehaviour
     [Tooltip("The spread of the chase shots")]
     public float chaseSpread = 20f;
 
-    [Header("Debug")]
-    public Renderer a;
-    public Renderer b;
+    [Header("Noticing Deer")]
+    public float idleNoticeMaxTime = 10f;
+    public float alertNoticeMaxTime = 3f;
+    public float activeNoticeMaxTime = 1f;
 
     [Header("Sound")]
     public AudioSource rustlingSFX;
@@ -94,6 +90,12 @@ public class AIHunter : MonoBehaviour
 
     private float cooldown = 3f;
     private float cooldownTimer = 2.0f;
+    private float noiseRange = 40f;
+
+    bool canSeeDeer = false;
+    Vector3 lastSeenDeerPos;
+    float currentNoticeMaxTime = 1f;
+    float noticeTimer = 0f;
 
     void Awake()
     {
@@ -107,73 +109,58 @@ public class AIHunter : MonoBehaviour
         StartCoroutine(RandomSearch());
     }
 
-    void Update() {
-        if (!deer) deer = GameObject.FindWithTag("Deer");
-        var mata = a.material;
-        var matb = b.material;
-        switch (state)
-        {
-            case 1:
-                mata.color = Color.green;
-                matb.color = Color.green;
-                break;
-            case 2:
-                mata.color = Color.blue;
-                matb.color = Color.blue;
-                break;
-            case 3:
-                mata.color = Color.yellow;
-                matb.color = Color.yellow;
-                break;
-            case 4:
-                mata.color = Color.cyan;
-                matb.color = Color.cyan;
-                break;
-            case 5:
-                mata.color = Color.magenta;
-                matb.color = Color.magenta;
-                break;
-            case 6:
-                mata.color = Color.red;
-                matb.color = Color.red;
-                break;
-            case 7:
-                mata.color = Color.black;
-                matb.color = Color.black;
-                break;
-        }
+    void SetNoticeMaxTime(float nmt){
+        currentNoticeMaxTime = nmt;
+        ResetNoticeTimer();
     }
 
-    bool DeerInView(float visibleProbabilityPS = -1) {
-        RaycastHit hit;
-        var start = transform.position + new Vector3(0, 1f, 0);
-        var end = deer.transform.position + new Vector3(0, 1f, 0);
-        var dir = (end-start).normalized;
-        if (Physics.Raycast(start, dir, out hit, 100f, canBlockSightLayerMask))
-        {
-            if (hasTaggedParent(hit.collider.gameObject, "Deer"))
-            {
-                lastSeenDeerPos = deer.transform.position;
-                Debug.DrawLine(start, hit.point, Color.red);
-                return true;
-                if (visibleProbabilityPS == -1){
-                    if (Random.Range(0f, 1f) < visibleProbabilityPS*Time.deltaTime){
-                        lastSeenDeerPos = deer.transform.position;
-                        Debug.DrawLine(start, hit.point, Color.red);
-                        return true;
-                    }
-                    Debug.DrawLine(start, hit.point, Color.yellow);
-                    return false;
-                } else{
-                    lastSeenDeerPos = deer.transform.position;
-                    Debug.DrawLine(start, hit.point, Color.red);
-                    return true;
-                }
-            } else{
-                Debug.DrawLine(start, hit.point, Color.green);
-            }
+    void ResetNoticeTimer(){
+        noticeTimer = Random.Range(currentNoticeMaxTime/2f, currentNoticeMaxTime);
+    }
+
+    void Update() {
+        if (!deer) deer = GameObject.FindWithTag("Deer");
+
+        float distance = (deer.transform.position - transform.position).magnitude;
+        float volume = 0;
+        if (distance <= noiseRange) {
+            volume = 1 - distance / noiseRange;
         }
-        return false;
+        runningSFX.volume = volume;
+
+        // Deer viewing logic
+        {
+            noticeTimer -= Time.deltaTime;
+            RaycastHit hit;
+            var start = transform.position + new Vector3(0, 1f, 0);
+            var end = deer.transform.position + new Vector3(0, 1f, 0);
+            var dir = (end-start).normalized;
+            var deerInView = false;
+            if (Physics.Raycast(start, dir, out hit, 100f, canBlockSightLayerMask) && hasTaggedParent(hit.collider.gameObject, "Deer")) deerInView = true;
+
+            if (canSeeDeer){
+                // We can already see the deer, so hiding in bushes is not really any use
+                canSeeDeer = deerInView;
+                if(canSeeDeer) Debug.DrawLine(start, end, Color.red);
+                else Debug.DrawLine(start, end, Color.green);
+                ResetNoticeTimer();
+            } else {
+                // We havent noticed the deer yet, so even if we look straight at it we still might not see it
+                canSeeDeer = deerInView && noticeTimer <= 0f;
+                if(canSeeDeer) {
+                    Debug.DrawLine(start, end, Color.red);
+                    print("This ran!");
+                }
+                else if (deerInView) Debug.DrawLine(start, end, Color.magenta);
+                else Debug.DrawLine(start, end, Color.cyan);
+
+                if (noticeTimer <= 0f) ResetNoticeTimer();
+            }
+            if (canSeeDeer) lastSeenDeerPos = deer.transform.position;
+        }
+
+        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer < 0f) cooldownTimer = 0f;
     }
 
     IEnumerator RandomSearch(){
@@ -184,13 +171,14 @@ public class AIHunter : MonoBehaviour
         runningSFX.Play();
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
-        agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
+        agent.SetDestination(new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
         anim.SetBool("isCrouching", false);
+        SetNoticeMaxTime(idleNoticeMaxTime);
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView(idleSightProbability)) {
+            if (canSeeDeer) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -203,7 +191,7 @@ public class AIHunter : MonoBehaviour
             // If not, check if we should randomly change idle desitnation
             else if (agent.remainingDistance <= 0.1f)
             {
-                agent.SetDestination(deer.transform.position + new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
+                agent.SetDestination(new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
             }
             yield return null;
         }
@@ -221,11 +209,12 @@ public class AIHunter : MonoBehaviour
         // Set destination to closest bush
         agent.isStopped = false;
         agent.SetDestination(closestBush.transform.position);
+        SetNoticeMaxTime(idleNoticeMaxTime);
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
 
             // Check if the deer is in sight
-            if (DeerInView(idleSightProbability)) {
+            if (canSeeDeer) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -256,14 +245,15 @@ public class AIHunter : MonoBehaviour
         runningSFX.Stop();
         //anim.SetBool("isCrouching", true); // We will stay as whatever we were before
         // Crouch
+        SetNoticeMaxTime(alertNoticeMaxTime);
         while (true){
             alertedForTimer += Time.deltaTime;
             // Have we been alerted for too long?
-            if (DeerInView()){
+            if (canSeeDeer){
                 heartbeatManager.Alert(this);
             }
             if (alertedForTimer > alertToActiveTime){
-                if (DeerInView()){
+                if (canSeeDeer){
                      // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
                     // Else, switch to chasing
                     var closestBush = FindClosestBush();
@@ -282,7 +272,7 @@ public class AIHunter : MonoBehaviour
                 }
             } 
             if (alertedForTimer > alertToIdleTime){
-                if (!DeerInView()){
+                if (!canSeeDeer){
                     heartbeatManager.UnAlert(this);
                     StartCoroutine(Tracking());
                     yield break;
@@ -302,6 +292,7 @@ public class AIHunter : MonoBehaviour
         anim.SetBool("isCrouching", true);
         rustlingSFX.Play();
         runningSFX.Stop();
+        SetNoticeMaxTime(alertNoticeMaxTime);
         // Crawl towards the deers position
         // If we are within range, switch to snipe
         // If we havent seen the deer for a while, switch to alert
@@ -309,7 +300,7 @@ public class AIHunter : MonoBehaviour
         var lastSeenDeer = 0f;
         while (true){
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (canSeeDeer) {
                 heartbeatManager.Alert(this);
                 lastSeenDeer = 0f;
                 if ((transform.position - deer.transform.position).magnitude <= crawlSniperRange){
@@ -344,9 +335,10 @@ public class AIHunter : MonoBehaviour
         anim.SetBool("isCrouching", false);
         rustlingSFX.Stop();
         runningSFX.Play();
+        SetNoticeMaxTime(alertNoticeMaxTime);
         while (true){
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (canSeeDeer) {
                 StartCoroutine(Alerted());
                 yield break;
             }
@@ -370,10 +362,11 @@ public class AIHunter : MonoBehaviour
         rustlingSFX.Stop();
         runningSFX.Stop();
         reloadSFX.Play();
+        SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
             lastShot += Time.deltaTime;
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (canSeeDeer) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
                 if (lastShot > snipeShotTime && cooldownTimer <= 0f){
@@ -405,15 +398,16 @@ public class AIHunter : MonoBehaviour
         rustlingSFX.Stop();
         runningSFX.Play();
         anim.SetBool("isCrouching", false);
+        SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
             lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
             lastSeenDeerPos = deer.transform.position;
             // Check if the deer is in sight
-            if (DeerInView()) {
+            if (canSeeDeer) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
-                if (lastShot > chaseShotTime){
+                if (lastShot > chaseShotTime && cooldownTimer <= 0f){
                     lastShot = 0f;
                     StartCoroutine(shootBullet(deer.transform.position+Vector3.up*1f, chaseSpread));
                 }
