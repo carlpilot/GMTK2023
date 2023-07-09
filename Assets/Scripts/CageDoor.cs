@@ -29,6 +29,7 @@ public class CageDoor : MonoBehaviour {
     }
 
     IEnumerator Open () {
+        isOpen = true;
         int closeFrames = Mathf.RoundToInt (openTime / Time.deltaTime);
         for (int i = 0; i < closeFrames; i++) {
             transform.Rotate (Vector3.left * openAngle / closeFrames);
