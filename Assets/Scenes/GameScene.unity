@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2710,3 +2710,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
+--- !u!1001 &2113503569
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059362783138449417, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701413355111786784, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_Name
+      value: BabyDeer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701413355111786784, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_TagString
+      value: BabyDeer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e7c0e1aec619f4634a7baf95e178c988, type: 3}
+--- !u!1 &2113503570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5701413355111786784, guid: e7c0e1aec619f4634a7baf95e178c988,
+    type: 3}
+  m_PrefabInstance: {fileID: 2113503569}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2113503571
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113503570}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3378a9b87a7f348fc96374f82b53f99b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

@@ -41,7 +41,10 @@ public class BabyDeer : MonoBehaviour
 
     IEnumerator startFollowing() {
         animator.Play("deerescape");
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(1.2f);
+
+        transform.position = target.transform.position;
+
         agent.enabled = true;
         agent.SetDestination(target.transform.position);
     }
