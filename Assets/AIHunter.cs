@@ -115,7 +115,7 @@ public class AIHunter : MonoBehaviour
     }
 
     void ResetNoticeTimer(){
-        noticeTimer = Random.Range(0f, currentNoticeMaxTime);
+        noticeTimer = Random.Range(currentNoticeMaxTime/2f, currentNoticeMaxTime);
     }
 
     void Update() {
