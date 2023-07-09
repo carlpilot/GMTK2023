@@ -152,12 +152,15 @@ public class CurrentGameManager : MonoBehaviour
         currentAI.Clear();
 
         if (!toDeer){
+            WayPoint[] waypoints = gameObject.GetComponent<HerdManager>().Start2();
+            WayPoint randomWP = waypoints[Random.Range(0, waypoints.Length)];
+
             // Switching to hunter
             isDeer = false;
             deer.SetActive(false);
             hunter.SetActive(true);
             for (int i = 0; i < 8; i++){
-                var deer = Instantiate(aiDeerPrefab, new Vector3(Random.Range(-50, 50f), 0f, Random.Range(-50, 50f)), Quaternion.identity);
+                var deer = Instantiate(aiDeerPrefab, new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f)), Quaternion.identity);
                 currentAI.Add(deer);
                 deer.transform.parent = transform;
 
@@ -171,7 +174,6 @@ public class CurrentGameManager : MonoBehaviour
                     transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
                 }
             }
-            gameObject.GetComponent<HerdManager>().Start2();
             // TODO: move the hunter to a random location
 
             enableDayMusic();

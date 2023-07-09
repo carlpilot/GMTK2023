@@ -13,7 +13,7 @@ public class HerdManager : MonoBehaviour
     private WayPoint target;
     private bool chillin = false;
 
-    public void Start2() {
+    public WayPoint[] Start2() {
         waypoints = wayPointHolder.transform.GetComponentsInChildren<WayPoint>();
         for (int i = 0; i < waypoints.Length; i++) {
             WayPoint temp = waypoints[i];
@@ -26,6 +26,8 @@ public class HerdManager : MonoBehaviour
             w.transform.position = new Vector3(w.transform.position.x, wg.GetWorldHeight(w.transform.position.x, w.transform.position.z), w.transform.position.z);
         }
         deer = FindObjectsOfType<DeerMovement>();
+
+        return waypoints;
     }
 
     // Update is called once per frame
