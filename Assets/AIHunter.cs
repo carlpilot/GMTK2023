@@ -121,12 +121,12 @@ public class AIHunter : MonoBehaviour
     void Update() {
         if (!deer) deer = GameObject.FindWithTag("Deer");
 
-        float distance = (deer.transform.position - transform.position).magnitude;
+        /*float distance = (deer.transform.position - transform.position).magnitude;
         float volume = 0;
         if (distance <= noiseRange) {
             volume = 1 - distance / noiseRange;
         }
-        runningSFX.volume = volume;
+        runningSFX.volume = volume;*/
 
         // Deer viewing logic
         {
