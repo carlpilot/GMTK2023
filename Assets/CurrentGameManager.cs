@@ -13,7 +13,7 @@ public class CurrentGameManager : MonoBehaviour
     public float dayDuration = 60f;
     [Tooltip("The current game time in days. 1 means 24 hours")]
     public float gameTime;
-    public int currentDay = 1;
+    public int currentDay = 0;
 
     [Header("Deer/Player stuff")]
     [Tooltip("Is the player a deer. If not, the player is a human")]
