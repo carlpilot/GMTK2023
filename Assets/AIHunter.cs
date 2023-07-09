@@ -172,7 +172,7 @@ public class AIHunter : MonoBehaviour
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
-        anim.SetBool("isCrouching", false);
+        anim.SetInteger("animState", 3); // Walk
         SetNoticeMaxTime(idleNoticeMaxTime);
         while (true){
             idleSwitchStateTimer -= Time.deltaTime;
@@ -205,7 +205,7 @@ public class AIHunter : MonoBehaviour
         runningSFX.Play();
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush();
-        anim.SetBool("isCrouching", false);
+        anim.SetInteger("animState", 3); // Walk
         // Set destination to closest bush
         agent.isStopped = false;
         agent.SetDestination(closestBush.transform.position);
@@ -230,7 +230,7 @@ public class AIHunter : MonoBehaviour
                 // Crouch
                 agent.isStopped = true;
                 runningSFX.Stop();
-                anim.SetBool("isCrouching", true);
+                anim.SetInteger("animState", 1); // Snipe
             }
             yield return null;
         }
@@ -243,7 +243,7 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = true;
         rustlingSFX.Stop();
         runningSFX.Stop();
-        //anim.SetBool("isCrouching", true); // We will stay as whatever we were before
+        anim.SetInteger("animState", 0); // Look
         // Crouch
         SetNoticeMaxTime(alertNoticeMaxTime);
         while (true){
@@ -289,7 +289,7 @@ public class AIHunter : MonoBehaviour
         agent.speed = crawlSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
-        anim.SetBool("isCrouching", true);
+        anim.SetInteger("animState", 4); // Crawl
         rustlingSFX.Play();
         runningSFX.Stop();
         SetNoticeMaxTime(alertNoticeMaxTime);
@@ -332,7 +332,7 @@ public class AIHunter : MonoBehaviour
         agent.speed = trackingSpeed;
         agent.isStopped = false;
         agent.SetDestination(lastSeenDeerPos);
-        anim.SetBool("isCrouching", false);
+        anim.SetInteger("animState", 3); // Walk
         rustlingSFX.Stop();
         runningSFX.Play();
         SetNoticeMaxTime(alertNoticeMaxTime);
@@ -358,7 +358,7 @@ public class AIHunter : MonoBehaviour
         agent.isStopped = true;
         var lastSeenDeer = 0f;
         var lastShot = 0f;
-        anim.SetBool("isCrouching", true);
+        anim.SetInteger("animState", 1); // Snipe
         rustlingSFX.Stop();
         runningSFX.Stop();
         reloadSFX.Play();
@@ -397,7 +397,7 @@ public class AIHunter : MonoBehaviour
         var lastShot = 0f;
         rustlingSFX.Stop();
         runningSFX.Play();
-        anim.SetBool("isCrouching", false);
+        anim.SetInteger("animState", 2); // Chase
         SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
             lastShot += Time.deltaTime;
