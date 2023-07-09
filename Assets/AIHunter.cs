@@ -128,6 +128,8 @@ public class AIHunter : MonoBehaviour
         }
         runningSFX.volume = volume;*/
 
+        if(agent.isStopped) transform.LookAt(deer.transform);
+
         // Deer viewing logic
         {
             noticeTimer -= Time.deltaTime;
