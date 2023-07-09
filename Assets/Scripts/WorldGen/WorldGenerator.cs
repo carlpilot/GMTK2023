@@ -31,7 +31,7 @@ public class WorldGenerator : MonoBehaviour {
 
     Dictionary<(int, int), GameObject> chunks = new Dictionary<(int, int), GameObject> ();
 
-    public enum RotationMode { RandomXYZ, RandomY, NoRotation }
+    public enum RotationMode { RandomXYZ, RandomY, NoRotation, Normal }
 
     private void Awake () {
         if (numChunksPerSide / 2.0f == numChunksPerSide / 2) {
@@ -95,6 +95,12 @@ public class WorldGenerator : MonoBehaviour {
                     GameObject g = Instantiate (prefabs[Random.Range (0, prefabs.Length)], hit.point - Vector3.up * 0.1f, rotation);
                     g.transform.localScale *= Random.Range (minSize, maxSize);
                     g.transform.parent = hit.transform;
+
+                    if (rotationMode == RotationMode.Normal) {
+                        g.transform.LookAt (hit.point + hit.normal);
+                        g.transform.Rotate (Vector3.right * 90.0f);
+                    }
+
                     numPlaced++;
                     if (numPlaced == num) break;
                 }

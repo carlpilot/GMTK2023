@@ -343,11 +343,18 @@ MonoBehaviour:
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
+  - name: Grass Patches
+    prefabs:
+    - {fileID: 1602606445905716244, guid: 5261272f79cfaf0499d3405591619a4d, type: 3}
+    numToSpawn: 1000
+    rotationMode: 3
+    minSize: 0.5
+    maxSize: 2
   - name: Bear Traps
     prefabs:
     - {fileID: 1142099830057205866, guid: c8633dd109037654d858b629a92e8a47, type: 3}
-    numToSpawn: 25
-    rotationMode: 1
+    numToSpawn: 40
+    rotationMode: 3
     minSize: 1
     maxSize: 1
 --- !u!4 &120987022
