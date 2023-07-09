@@ -31,13 +31,13 @@ public class CageDoor : MonoBehaviour {
     IEnumerator Open () {
         int closeFrames = Mathf.RoundToInt (openTime / Time.deltaTime);
         for (int i = 0; i < closeFrames; i++) {
-            transform.Rotate (Vector3.right * openAngle / closeFrames);
+            transform.Rotate (Vector3.left * openAngle / closeFrames);
             yield return new WaitForEndOfFrame ();
         }
     }
 
     public void Reset () {
-        if(isOpen) transform.Rotate (Vector3.left * openAngle);
+        if(isOpen) transform.Rotate (Vector3.right * openAngle);
         isOpen = false;
     }
 }
