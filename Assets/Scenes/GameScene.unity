@@ -2651,21 +2651,26 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.ctime1
-      value: 16191
+      value: 9445
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.ctime2
-      value: 38357
+      value: 16191
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.ctime3
-      value: 61102
+      value: 37586
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.ctime4
+      value: 62066
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: fogColorCurve.ctime5
       value: 65535
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
@@ -2686,17 +2691,17 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key1.b
-      value: 0.8490566
+      value: 0.98950773
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key1.g
-      value: 0.8490566
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key1.r
-      value: 0.8490566
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
@@ -2706,17 +2711,17 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key2.b
-      value: 0.23584908
+      value: 0.8715464
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key2.g
-      value: 0.23584908
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key2.r
-      value: 0.23584908
+      value: 0.7905838
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
@@ -2726,17 +2731,17 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key3.b
-      value: 0.1981132
+      value: 0.16981131
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key3.g
-      value: 0.1981132
+      value: 0.16981131
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key3.r
-      value: 0.1981132
+      value: 0.16981131
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
@@ -2746,16 +2751,31 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key4.b
-      value: 0.49411765
+      value: 0.1981132
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key4.g
-      value: 0.49411765
+      value: 0.1981132
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.key4.r
+      value: 0.1981132
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: fogColorCurve.key5.b
+      value: 0.49411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: fogColorCurve.key5.g
+      value: 0.49411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: fogColorCurve.key5.r
       value: 0.49411765
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
@@ -2926,7 +2946,7 @@ PrefabInstance:
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColorCurve.m_NumColorKeys
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
