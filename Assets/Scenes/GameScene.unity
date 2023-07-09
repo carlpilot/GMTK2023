@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1368,6 +1368,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerDeer
       objectReference: {fileID: 0}
+    - target: {fileID: 4369732300966501739, guid: ab3833c8a6002c8039b9ed3814169e65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab3833c8a6002c8039b9ed3814169e65, type: 3}
 --- !u!1 &863656708
@@ -1417,6 +1422,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerHunter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341135708975967001, guid: b2d2edc8ddab4bdfca56aaa7ebdf9c65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8341135708975967002, guid: b2d2edc8ddab4bdfca56aaa7ebdf9c65,
         type: 3}
@@ -2781,6 +2791,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: BabyDeer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073983626292010544, guid: e7c0e1aec619f4634a7baf95e178c988,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7c0e1aec619f4634a7baf95e178c988, type: 3}
