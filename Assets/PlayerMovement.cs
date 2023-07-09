@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour {
     Volume deerVol;
     Vignette exhaustionVingette;
 
+    float originalHeight;
+
     [Header("Camera")]
     public float rotationSpeed = 3;
 
@@ -54,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
             deerVol = GetComponentInChildren<Volume>();
             deerVol.profile.TryGet(out exhaustionVingette);
         }
-        
+        originalHeight = camera.transform.localPosition.y;
     }
 
     void Start () {
@@ -89,6 +91,12 @@ public class PlayerMovement : MonoBehaviour {
                 isCrouching = false;
                 isSprinting = false;
                 moveSpeed = walkSpeed;
+            }
+
+            if (isCrouching){
+                camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, Vector3.up * originalHeight/2, Time.deltaTime * 5f);
+            } else {
+                camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, Vector3.up * originalHeight, Time.deltaTime * 5f);
             }
 
             if (isSprinting) {

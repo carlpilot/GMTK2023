@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8330957483237814218}
   - component: {fileID: 8330957483237814219}
   - component: {fileID: 8330957483237814217}
+  - component: {fileID: 1551377713}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9ef87e5f0bea2cd8863f136d80f1ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayDuration: 300
+  dayDuration: 240
   gameTime: 0
   isDeer: 0
   aiDeerPrefab: {fileID: 5701413355111786784, guid: de94ad2aaf83fdac88933692c9194103,
@@ -58,57 +59,102 @@ MonoBehaviour:
   sunAxisAngle: 60
   fogDensityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.03
+      inSlope: -0.099999994
+      outSlope: -0.099999994
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25
+      value: 0.005
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.03
+      inSlope: 0.08333333
+      outSlope: 0.08333333
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.05
+      inSlope: -0.016666673
+      outSlope: -0.016666673
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.03
+      inSlope: -0.10000002
+      outSlope: -0.10000002
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   fogColorCurve:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    key1: {r: 0.8726415, g: 1, b: 0.98950773, a: 1}
+    key2: {r: 0.7905838, g: 0.8867924, b: 0.8715464, a: 1}
+    key3: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+    key4: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+    key5: {r: 0.49411765, g: 0.49411765, b: 0.49411765, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
+    ctime1: 9445
+    ctime2: 16191
+    ctime3: 37586
+    ctime4: 62066
+    ctime5: 65535
     ctime6: 0
     ctime7: 0
     atime0: 0
     atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
+    atime2: 65535
+    atime3: 65535
+    atime4: 65535
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   sunColorCurve:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.9622642, g: 0.9263558, b: 0.5582948, a: 1}
+    key1: {r: 1, g: 0.98736316, b: 0.8537736, a: 1}
+    key2: {r: 1, g: 0.9882353, b: 0.85490197, a: 0}
+    key3: {r: 0.9622642, g: 0.5764507, b: 0.75243586, a: 0}
+    key4: {r: 0.9339623, g: 0.6760826, b: 0.19824673, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0.9607843, g: 0.9254902, b: 0.5568628, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
+    ctime1: 3470
+    ctime2: 27178
+    ctime3: 32768
+    ctime4: 35852
+    ctime5: 39128
+    ctime6: 63415
+    ctime7: 65535
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -118,8 +164,13 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
+  dayMusic: {fileID: 0}
+  nightMusic: {fileID: 0}
+  deerMat1: {fileID: 2100000, guid: afa6917cbd40d767f97dabef9b87a946, type: 2}
+  deerMat2: {fileID: 2100000, guid: c0cd613afa3f6433380f00def294ef45, type: 2}
+  deerMat3: {fileID: 2100000, guid: 4848cde0c9d9f491b9a245a50f1f4cea, type: 2}
 --- !u!114 &8330957483237814217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,3 +188,16 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 3335804261ca37b0794b9fa20420c327, type: 2}
+--- !u!114 &1551377713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8330957483237814220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44fe809d511cd49b482e4493b446ef47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wayPointHolder: {fileID: 0}
