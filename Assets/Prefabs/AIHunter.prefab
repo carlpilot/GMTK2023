@@ -1035,7 +1035,7 @@ MonoBehaviour:
   anim: {fileID: 7390298591387569602}
   bulletPrefab: {fileID: 2799189893399765348, guid: 64e4692a0b0094f28b8fcf975f6965ea,
     type: 3}
-  bulletSpeed: 50
+  bulletSpeed: 70
   canBlockSightLayerMask:
     serializedVersion: 2
     m_Bits: 87
@@ -1043,7 +1043,6 @@ MonoBehaviour:
   idleWanderToHideTime: 30
   idleHideToWanderTime: 60
   idleSpeed: 2
-  idleSightProbability: 0.5
   alertToActiveTime: 2
   alertToIdleTime: 6
   crawlOverChaseProbability: 0.8
@@ -1058,8 +1057,9 @@ MonoBehaviour:
   chaseSpeed: 3.5
   chaseShotTime: 1
   chaseSpread: 10
-  a: {fileID: 904471616840915067}
-  b: {fileID: 5847392254641582853}
+  idleNoticeMaxTime: 10
+  alertNoticeMaxTime: 3
+  activeNoticeMaxTime: 1
   rustlingSFX: {fileID: 6299235560381960233}
   gunshotSFX: {fileID: 3882396286693962510}
   runningSFX: {fileID: 2890659170669869585}
