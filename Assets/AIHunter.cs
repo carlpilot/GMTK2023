@@ -85,6 +85,8 @@ public class AIHunter : MonoBehaviour
     public float crouchVisibilityMultiplier = 0.5f;
     public float sprintVisibilityMultiplier = 2f;
 
+    public float maxDeerNoticeDist = 75f;
+
     [Header("Sound")]
     public AudioSource rustlingSFX;
     public AudioSource gunshotSFX;
@@ -150,7 +152,7 @@ public class AIHunter : MonoBehaviour
             var end = deer.transform.position + new Vector3(0, 1f, 0);
             var dir = (end-start).normalized;
             var deerInView = false;
-            if (Physics.Raycast(start, dir, out hit, 100f, canBlockSightLayerMask) && hasTaggedParent(hit.collider.gameObject, "Deer")) deerInView = true;
+            if (Physics.Raycast(start, dir, out hit, maxDeerNoticeDist, canBlockSightLayerMask) && hasTaggedParent(hit.collider.gameObject, "Deer")) deerInView = true;
 
             if (canSeeDeer){
                 // We can already see the deer, so hiding in bushes is not really any use
