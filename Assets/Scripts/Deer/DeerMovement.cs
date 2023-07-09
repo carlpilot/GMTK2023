@@ -19,10 +19,13 @@ public class DeerMovement : MonoBehaviour
     public State state = State.IDLE;
     public float timeFleeing = 0;
 
+    WorldGenerator wg;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        wg = FindObjectOfType<WorldGenerator>();
     }
 
     // Update is called once per frame
@@ -58,6 +61,9 @@ public class DeerMovement : MonoBehaviour
             if (timeFleeing > 10) {
                 idle();
             }
+        }
+        if (Random.value < 0.01) {
+            transform.position = new Vector3(transform.position.x, wg.GetWorldHeight(transform.position.x, transform.position.z), transform.position.z);
         }
     }
 
