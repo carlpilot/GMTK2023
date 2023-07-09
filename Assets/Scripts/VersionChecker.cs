@@ -70,7 +70,7 @@ public class VersionChecker : MonoBehaviour {
         newVersionNotification.SetActive (true);
         string updateText = lines[1];
         newVersionMessage.text = updateText;
-        versionDisplay.text = string.Format ("Currently: v{0}\nAvailable:  v{1}", CurrentVersion, lines[0]);
+        versionDisplay.text = string.Format ("Currently: {0}\nAvailable: {1}", CurrentVersion, lines[0]);
     }
 
     public void ClosePrompt () {
