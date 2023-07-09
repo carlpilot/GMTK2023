@@ -21,9 +21,11 @@ public class BearTrap : MonoBehaviour {
     }
 
     public void Reset () {
-        jaw1.transform.Rotate (Vector3.right * closeAngle);
-        jaw2.transform.Rotate (Vector3.right * closeAngle);
-        isOpen = false;
+        if (!isOpen) {
+            jaw1.transform.Rotate (Vector3.right * closeAngle);
+            jaw2.transform.Rotate (Vector3.right * closeAngle);
+        }
+        isOpen = true;
     }
 
     private void OnTriggerEnter (Collider other) {
