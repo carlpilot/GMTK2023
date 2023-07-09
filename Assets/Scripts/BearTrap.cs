@@ -20,6 +20,12 @@ public class BearTrap : MonoBehaviour {
         }
     }
 
+    public void Reset () {
+        jaw1.transform.Rotate (Vector3.right * closeAngle);
+        jaw2.transform.Rotate (Vector3.right * closeAngle);
+        isOpen = false;
+    }
+
     private void OnTriggerEnter (Collider other) {
         if (isOpen && (other.tag == "Deer" || other.gameObject.layer == 6 || other.tag == "Hunter" || other.gameObject.layer == 7) && other.GetComponent<PlayerMovement> () != null) {
             StartCoroutine (Close ());

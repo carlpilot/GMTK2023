@@ -18,8 +18,12 @@ public class CageDoor : MonoBehaviour {
         RaycastHit hit;
         if(cgm.isDeer && Physics.Raycast(playerDeerCamera.position, playerDeerCamera.forward, out hit, 3.0f)) {
             if(hit.collider.gameObject == this.gameObject) {
-                if (!hasShownTooltip) HintMessage.ShowMessage ("Press SPACE to open the cage");
+                if (!hasShownTooltip) HintMessage.ShowMessage ("Press SPACE to open the cage", 0.1f);
             }
         }
+    }
+
+    public void Reset () {
+
     }
 }
