@@ -380,6 +380,7 @@ MonoBehaviour:
   deathDeer: {fileID: 1080087475}
   deathHunter: {fileID: 538018803}
   text: {fileID: 282303808}
+  fader: {fileID: 700133075}
 --- !u!1 &536859340
 GameObject:
   m_ObjectHideFlags: 0
