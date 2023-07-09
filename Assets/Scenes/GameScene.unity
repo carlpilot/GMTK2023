@@ -1229,6 +1229,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerDeer
       objectReference: {fileID: 0}
+    - target: {fileID: 4369732300966501743, guid: ab3833c8a6002c8039b9ed3814169e65,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369732300966501743, guid: ab3833c8a6002c8039b9ed3814169e65,
+        type: 3}
+      propertyPath: crouchSpeed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab3833c8a6002c8039b9ed3814169e65, type: 3}
 --- !u!1 &863656708
@@ -1333,6 +1343,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341135708975967012, guid: b2d2edc8ddab4bdfca56aaa7ebdf9c65,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341135708975967012, guid: b2d2edc8ddab4bdfca56aaa7ebdf9c65,
+        type: 3}
+      propertyPath: crouchSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8341135708975967013, guid: b2d2edc8ddab4bdfca56aaa7ebdf9c65,
         type: 3}
