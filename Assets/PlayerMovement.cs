@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour {
     CharacterController cc;
@@ -9,6 +11,11 @@ public class PlayerMovement : MonoBehaviour {
 
     float yaw = 0;
     float pitch = 0;
+
+    public bool isDeer = false;
+
+    Volume deerVol;
+    Vignette exhaustionVingette;
 
     [Header("Camera")]
     public float rotationSpeed = 3;
@@ -32,8 +39,22 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Trapping")]
     public float chanceToFreeFromTrap = 0.05f;
 
+    [Header("Sprinting")]
+    public float exhaustionVingetteMinIntensity = 0f;
+    public float exhaustionVingetteMaxIntensity = 1f;
+    public float sprintTime = 5f;
+    public float sprintCooldown = 5f;
+
+    float sprintTimer = 0f;
+    float sprintCooldownTimer = 0f;
+
     void Awake () {
         cc = GetComponent<CharacterController> ();
+        if (isDeer){
+            deerVol = GetComponentInChildren<Volume>();
+            deerVol.profile.TryGet(out exhaustionVingette);
+        }
+        
     }
 
     void Start () {
@@ -69,6 +90,8 @@ public class PlayerMovement : MonoBehaviour {
                 isSprinting = false;
                 moveSpeed = walkSpeed;
             }
+
+            if (exhaustionVingette) exhaustionVingette.intensity.value = Mathf.Lerp (exhaustionVingetteMinIntensity, exhaustionVingetteMaxIntensity, moveVec.magnitude);
 
             cc.Move (moveVec.normalized * Time.deltaTime * moveSpeed);
 
