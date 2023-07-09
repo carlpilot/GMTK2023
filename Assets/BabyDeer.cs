@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class BabyDeer : MonoBehaviour
 {
@@ -30,6 +31,11 @@ public class BabyDeer : MonoBehaviour
                 agent.SetDestination(transform.position);
             } else {
                 agent.SetDestination(target.transform.position);
+            }
+
+            if ((transform.position).magnitude > 220) {
+                Destroy(gameObject);
+                SceneManager.LoadScene(0);
             }
         }
     }
