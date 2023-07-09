@@ -82,6 +82,7 @@ public class AIHunter : MonoBehaviour
     public float activeNoticeMaxTime = 1f;
     public float bushVisibilityMultiplier = 0.2f;
     public float crouchVisibilityMultiplier = 0.5f;
+    public float sprintVisibilityMultiplier = 2f;
 
     [Header("Sound")]
     public AudioSource rustlingSFX;
@@ -140,6 +141,7 @@ public class AIHunter : MonoBehaviour
             var closestPlayerBush = FindClosestBush(deer.transform.position);
             if ((closestPlayerBush.transform.position - deer.transform.position).magnitude < 2f) visibilityMultiplier *= bushVisibilityMultiplier;
             if (deer.GetComponent<PlayerMovement>().isCrouching) visibilityMultiplier *= crouchVisibilityMultiplier;
+            if (deer.GetComponent<PlayerMovement>().isSprinting) visibilityMultiplier *= sprintVisibilityMultiplier;
 
             noticeTimer -= Time.deltaTime*visibilityMultiplier;
             RaycastHit hit;

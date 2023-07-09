@@ -128,6 +128,10 @@ MonoBehaviour:
   crouchNoiseRange: 15
   sprintNoiseRange: 50
   chanceToFreeFromTrap: 0.05
+  exhaustionVingetteMinIntensity: 0
+  exhaustionVingetteMaxIntensity: 1
+  sprintTime: 5
+  sprintCooldown: 5
 --- !u!1 &4369732301832589469
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +159,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4369732301832589469}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.35, z: 0.715}
+  m_LocalPosition: {x: 0, y: 1.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -271,7 +275,7 @@ PrefabInstance:
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.941
       objectReference: {fileID: 0}
     - target: {fileID: 2733970526779753102, guid: f702b56f1f93705ae9e4a26fe932073b,
         type: 3}
