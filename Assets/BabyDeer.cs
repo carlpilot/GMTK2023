@@ -12,13 +12,15 @@ public class BabyDeer : MonoBehaviour
     public GameObject target;
 
     private bool escaped = false;
+    private Vector3 starting;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
         agent.enabled = false;
+
+        starting = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
 
     // Update is called once per frame
@@ -53,5 +55,15 @@ public class BabyDeer : MonoBehaviour
 
         agent.enabled = true;
         agent.SetDestination(target.transform.position);
+    }
+
+    public bool hasEscaped() {
+        return escaped;
+    }
+
+    public void Reset() {
+        escaped = false;
+        agent.enabled = false;
+        transform.position = starting;
     }
 }
