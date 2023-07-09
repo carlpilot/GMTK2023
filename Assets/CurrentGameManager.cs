@@ -51,6 +51,9 @@ public class CurrentGameManager : MonoBehaviour
 
     List<GameObject> currentAI = new List<GameObject>();
 
+    public static int lastReachedDay = 1;
+    public static bool lastWasDeer = false;
+
 
     void Awake()
     {
@@ -78,6 +81,8 @@ public class CurrentGameManager : MonoBehaviour
     
     void Update()
     {
+        lastReachedDay = currentDay;
+        lastWasDeer = isDeer;
         gameTime +=Time.deltaTime / dayDuration;
         gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f)); 
 
