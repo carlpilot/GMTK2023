@@ -89,7 +89,7 @@ public class CurrentGameManager : MonoBehaviour
                 // We are a deer and it is night time
             } else{
                 // We are a deer and survived the night. Switch to hunter
-                print("Switching to hunter from deer");
+                print("Switching to hunter from deer"); 
                 StartCoroutine(SwitchStates(false));
             }
         } else {
