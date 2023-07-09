@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour {
                 isCrouching = true;
                 isSprinting = false;
                 moveSpeed = crouchSpeed;
-            } else if (Input.GetKey (KeyCode.LeftControl)) {
+            } else if (Input.GetKey (KeyCode.LeftControl) && sprintTimer <= sprintTime) {
                 isCrouching = false;
                 isSprinting = true;
                 moveSpeed = sprintSpeed;
@@ -91,7 +91,18 @@ public class PlayerMovement : MonoBehaviour {
                 moveSpeed = walkSpeed;
             }
 
-            if (exhaustionVingette) exhaustionVingette.intensity.value = Mathf.Lerp (exhaustionVingetteMinIntensity, exhaustionVingetteMaxIntensity, moveVec.magnitude);
+            if (isSprinting) {
+                sprintTimer += Time.deltaTime;
+                sprintCooldownTimer = 0f;
+            } else{
+                sprintCooldownTimer += Time.deltaTime;
+                if (sprintCooldownTimer >= sprintCooldown) {
+                    sprintTimer -= Time.deltaTime;
+                    sprintTimer = Mathf.Clamp (sprintTimer, 0f, sprintTime);
+                }
+            }
+
+            if (exhaustionVingette) exhaustionVingette.intensity.value = Mathf.Lerp (exhaustionVingetteMinIntensity, exhaustionVingetteMaxIntensity, sprintTimer / sprintTime);
 
             cc.Move (moveVec.normalized * Time.deltaTime * moveSpeed);
 
