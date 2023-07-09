@@ -41,6 +41,7 @@ public class CurrentGameManager : MonoBehaviour
     GameObject deer;
     GameObject hunter;
     GameObject babyDeer;
+    Spawn spawnObj;
 
     public Material deerMat1;
     public Material deerMat2;
@@ -72,6 +73,7 @@ public class CurrentGameManager : MonoBehaviour
         deer = GameObject.FindWithTag("Deer");
         hunter = GameObject.FindWithTag("Hunter");
         babyDeer = GameObject.FindWithTag("BabyDeer");
+        spawnObj = FindObjectOfType<Spawn>();
 
         deer.SetActive(false);
         hunter.SetActive(false);
@@ -167,6 +169,7 @@ public class CurrentGameManager : MonoBehaviour
             deer.SetActive(false);
             hunter.SetActive(true);
             babyDeer.SetActive(false);
+            spawnObj.gameObject.SetActive(false);
             currentDay++;
             gameTime = 0f;
             for (int i = 0; i < CalcNumDeerToSpawn(); i++){
@@ -210,7 +213,9 @@ public class CurrentGameManager : MonoBehaviour
             WorldGenerator wg = FindObjectOfType<WorldGenerator>();
             Vector3 spawn = new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f));
             spawn = new Vector3(spawn.x, wg.GetWorldHeight(spawn.x, spawn.z), spawn.z);
+            spawnObj.transform.position = spawn;
             deer.GetComponent<PlayerMovement>().SetSpawn(spawn);
+            spawnObj.gameObject.SetActive(true);
 
             for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
