@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2578,6 +2578,21 @@ PrefabInstance:
       propertyPath: dayMusic
       value: 
       objectReference: {fileID: 1391665215}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: deerMat1
+      value: 
+      objectReference: {fileID: 2100000, guid: afa6917cbd40d767f97dabef9b87a946, type: 2}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: deerMat2
+      value: 
+      objectReference: {fileID: 2100000, guid: c0cd613afa3f6433380f00def294ef45, type: 2}
+    - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
+        type: 3}
+      propertyPath: deerMat3
+      value: 
+      objectReference: {fileID: 2100000, guid: 4848cde0c9d9f491b9a245a50f1f4cea, type: 2}
     - target: {fileID: 8330957483237814219, guid: 43ea0cabd6ef01ee59aef7682e7207b3,
         type: 3}
       propertyPath: fogColor.b
