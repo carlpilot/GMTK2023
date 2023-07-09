@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 // This is the manager for a current game. It does not do scene switching or whatever
 public class CurrentGameManager : MonoBehaviour
@@ -51,6 +52,9 @@ public class CurrentGameManager : MonoBehaviour
 
     List<GameObject> currentAI = new List<GameObject>();
 
+    public static int lastReachedDay = 1;
+    public static bool lastWasDeer = false;
+
 
     void Awake()
     {
@@ -78,6 +82,8 @@ public class CurrentGameManager : MonoBehaviour
     
     void Update()
     {
+        lastReachedDay = currentDay;
+        lastWasDeer = isDeer;
         gameTime +=Time.deltaTime / dayDuration;
         gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f)); 
 
@@ -121,7 +127,8 @@ public class CurrentGameManager : MonoBehaviour
         // We are a hunter and have shot the deer. Switch to deer. Also set to night time
         print("Player Dead");
         if (isSwitchingStates) return;
-        deer.SetActive(false);
+        //deer.SetActive(false);
+        SceneManager.LoadScene(2);
     }
 
     public void enableDayMusic(){
@@ -257,6 +264,19 @@ public class CurrentGameManager : MonoBehaviour
     }
 
     public int CalcNumHunterToSpawn(){
-        return 0;
+        switch (currentDay){
+            case 0:
+                return 2;
+            case 1:
+                return 3;
+            case 3:
+                return 5;
+            case 4:
+                return 6;
+            case 5:
+                return 7;
+            default:
+                return 8;
+        }
     }
 }
