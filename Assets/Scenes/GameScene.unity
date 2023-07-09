@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -324,7 +324,7 @@ MonoBehaviour:
     - {fileID: 2604693855272652133, guid: 83c8e9d4fff05ac45a4b9fc312a441c0, type: 3}
     - {fileID: 8671283949355611876, guid: 201b2119b48777340811ad599b1c1d84, type: 3}
     - {fileID: 6827926224806294653, guid: 6db911069bd90c24bb2e124f9e374f30, type: 3}
-    numToSpawn: 125
+    numToSpawn: 175
     rotationMode: 0
     minSize: 0.25
     maxSize: 4
@@ -339,7 +339,7 @@ MonoBehaviour:
   - name: Bushes
     prefabs:
     - {fileID: 4992637931821041266, guid: efd85109adebee64085846ee96ac72f6, type: 3}
-    numToSpawn: 100
+    numToSpawn: 250
     rotationMode: 1
     minSize: 0.5
     maxSize: 2
