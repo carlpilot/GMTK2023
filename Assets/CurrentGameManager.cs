@@ -85,9 +85,9 @@ public class CurrentGameManager : MonoBehaviour
         lastReachedDay = currentDay;
         lastWasDeer = isDeer;
         gameTime +=Time.deltaTime / dayDuration;
-        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f)); 
+        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f));
+        var gt = gameTime;
 
-        float gt = Mathf.Repeat(gameTime, 1f);
         Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
         Vector3 sunDirectionNow = Quaternion.Euler(0, 0, -gt*360f) * sunDirectionMorning;
         GameObject.FindWithTag("Sun").transform.rotation = Quaternion.LookRotation(sunDirectionNow, Vector3.up);
@@ -97,23 +97,6 @@ public class CurrentGameManager : MonoBehaviour
         GameObject.FindWithTag("Sun").GetComponent<Light>().color = sunColorCurve.Evaluate(gt);
 
         if (isSwitchingStates) return;
-
-        if  (isDeer) {
-            if (inCorrectState()) {
-                // We are a deer and it is night time
-            } else{
-                // We are a deer and survived the night. Switch to hunter
-                print("Switching to hunter from deer"); 
-                StartCoroutine(SwitchStates(false));
-                currentDay++;
-            }
-        } else {
-            if (inCorrectState()) {
-                // We are a hunter and it is day time
-            } else{
-                // No more hunter time limit
-            }
-        }
     }
 
     public void ShootDeer(){
@@ -129,6 +112,10 @@ public class CurrentGameManager : MonoBehaviour
         if (isSwitchingStates) return;
         //deer.SetActive(false);
         SceneManager.LoadScene(2);
+    }
+    public void CompleteDeerDay(){
+        if (isSwitchingStates) return;
+        StartCoroutine(SwitchStates(false));
     }
 
     public void enableDayMusic(){
@@ -172,6 +159,8 @@ public class CurrentGameManager : MonoBehaviour
             deer.SetActive(false);
             hunter.SetActive(true);
             babyDeer.SetActive(false);
+            currentDay++;
+            gameTime = 0f;
             for (int i = 0; i < CalcNumDeerToSpawn(); i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f)), Quaternion.identity);
                 currentAI.Add(deer);
@@ -205,7 +194,7 @@ public class CurrentGameManager : MonoBehaviour
             hunter.SetActive(false);
             deer.SetActive(true);
             babyDeer.SetActive(true);
-            gameTime = Mathf.Floor(gameTime) + 0.5f;
+            gameTime = 0.5f;
             
             WorldGenerator wg = FindObjectOfType<WorldGenerator>();
             Vector3 spawn = new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f));
@@ -239,7 +228,7 @@ public class CurrentGameManager : MonoBehaviour
 
     bool inCorrectState()
     {
-        float gt = Mathf.Repeat(gameTime, 1f);
+        float gt = gameTime;
         if (isDeer)
         {
             return (gt >= 0.5f && gt < 1f);
