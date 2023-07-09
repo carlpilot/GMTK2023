@@ -20,7 +20,7 @@ public class Heartbeat : MonoBehaviour
         if (nearestHunter != null) {
             float distance = (nearestHunter.transform.position - transform.position).magnitude;
             float volume = 1 - distance / 100;
-            print("volume: " + volume);
+            //print("volume: " + volume);
             heartbeatSFX.volume = volume;
         } else {
             heartbeatSFX.volume = 0;
