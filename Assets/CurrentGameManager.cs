@@ -139,6 +139,9 @@ public class CurrentGameManager : MonoBehaviour
             b.threshold.value = 0f;
         }
 
+        foreach (BearTrap b in FindObjectsOfType<BearTrap> ()) b.Reset ();
+        FindObjectOfType<CageDoor> ().Reset ();
+
         foreach (var ai in currentAI){
             Destroy(ai);
         }
