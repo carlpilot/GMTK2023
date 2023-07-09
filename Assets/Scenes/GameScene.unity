@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -251,6 +251,12 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!4 &61615124 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4369732301832589468, guid: ab3833c8a6002c8039b9ed3814169e65,
+    type: 3}
+  m_PrefabInstance: {fileID: 861629503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &120987019
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +842,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1014881734615520323, guid: 6e3879b3d26ea3d43afaab226ba9dbda,
+        type: 3}
+      propertyPath: playerDeerCamera
+      value: 
+      objectReference: {fileID: 61615124}
     - target: {fileID: 1101020102161532852, guid: 6e3879b3d26ea3d43afaab226ba9dbda,
         type: 3}
       propertyPath: m_RootOrder
@@ -1061,11 +1072,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8e17a9c1dd95bca44b58719d26dd2fde, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4dad37c8219598240bb685ca7d378b4d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1965,7 +1976,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
