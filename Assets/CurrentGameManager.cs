@@ -184,7 +184,11 @@ public class CurrentGameManager : MonoBehaviour
             deer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
             for (int i = 0; i < 3; i++){
-                var hunter = Instantiate(aiHunterPrefab, new Vector3(Random.Range(-75, 75), 0f, Random.Range(-75, 75)), Quaternion.identity);
+                float x = 0;
+                while (x < 10 && x > -10) x = Random.Range(-20, 20);
+                float z = 0;
+                while (z < 10 && z > -10) z = Random.Range(-20, 20);
+                var hunter = Instantiate(aiHunterPrefab, new Vector3(x, 0f, z), Quaternion.identity);
                 currentAI.Add(hunter);
             }
             // TODO: move the deer to a random location
