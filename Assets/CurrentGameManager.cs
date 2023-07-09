@@ -208,9 +208,9 @@ public class CurrentGameManager : MonoBehaviour
             gameTime = Mathf.Floor(gameTime) + 0.5f;
             
             WorldGenerator wg = FindObjectOfType<WorldGenerator>();
-            spawn = new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f));
+            Vector3 spawn = new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f));
             spawn = new Vector3(spawn.x, wg.GetWorldHeight(spawn.x, spawn.z), spawn.z);
-            deer.SetSpawn(spawn);
+            deer.GetComponent<PlayerMovement>().SetSpawn(spawn);
 
             for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
