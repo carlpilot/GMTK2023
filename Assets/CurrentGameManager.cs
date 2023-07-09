@@ -32,6 +32,10 @@ public class CurrentGameManager : MonoBehaviour
     public Gradient fogColorCurve;
     public Gradient sunColorCurve;
 
+    [Header("Night and Day Music")]
+    public AudioSource dayMusic;
+    public AudioSource nightMusic;
+
     GameObject deer;
     GameObject hunter;
 
@@ -111,6 +115,16 @@ public class CurrentGameManager : MonoBehaviour
         deer.SetActive(false);
     }
 
+    public void enableDayMusic(){
+        dayMusic.Play();
+        nightMusic.Stop();
+    }
+
+    public void enableNightMusic(){
+        dayMusic.Stop();
+        nightMusic.Play();
+    }
+
     IEnumerator SwitchStates(bool toDeer, bool startWhite = false){
         isSwitchingStates = true;
         if (!startWhite){
@@ -142,6 +156,8 @@ public class CurrentGameManager : MonoBehaviour
             }
             gameObject.GetComponent<HerdManager>().Start2();
             // TODO: move the hunter to a random location
+
+            enableDayMusic();
         } else {
             // Switching to deer
             isDeer = true;
@@ -153,6 +169,8 @@ public class CurrentGameManager : MonoBehaviour
                 currentAI.Add(hunter);
             }
             // TODO: move the deer to a random location
+
+            enableNightMusic();
         }
 
         for (float i = 0; i <= animationTime; i += Time.deltaTime){
