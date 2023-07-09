@@ -67,7 +67,7 @@ public class CurrentGameManager : MonoBehaviour
     void Update()
     {
         gameTime +=Time.deltaTime / dayDuration;
-        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f));
+        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f)); 
 
         float gt = Mathf.Repeat(gameTime, 1f);
         Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
