@@ -99,6 +99,14 @@ public class CurrentGameManager : MonoBehaviour
         if (isSwitchingStates) return;
     }
 
+    void SendHunterControlsMessage () {
+        HintMessage.ShowMessage ("WASD to move, hold Shift to sneak");
+    }
+
+    void SendDeerControlsMessage () {
+        HintMessage.ShowMessage ("Hold Shift to sneak, Ctrl to sprint");
+    }
+
     public void ShootDeer(){
         // We are a hunter and have shot the deer. Switch to deer. Also set to night time
         print("Switching to deer from hunter");
@@ -184,6 +192,9 @@ public class CurrentGameManager : MonoBehaviour
             // TODO: move the hunter to a random location
 
             enableDayMusic();
+
+            HintMessage.ShowMessage ("You are the hunter, patrol the woods around your lodge");
+            Invoke ("SendHunterControlsMessage", 6.0f);
         } else {
             // Switching to deer
 
@@ -212,6 +223,9 @@ public class CurrentGameManager : MonoBehaviour
             // TODO: move the deer to a random location
 
             enableNightMusic();
+
+            HintMessage.ShowMessage ("Now you are the deer - find your way to the hunting lodge and free the baby deer from the cage, but watch out for the hunters!", 10);
+            Invoke ("SendDeerControlsMessage", 11);
         }
 
         for (float i = 0; i <= animationTime; i += Time.deltaTime){
