@@ -46,7 +46,8 @@ public class BabyDeer : MonoBehaviour
     IEnumerator startFollowing() {
         yield return new WaitForSeconds(0.5f);
 
-        transform.position = target.transform.position;
+        // set position to target position, 2 meters away 
+        transform.position = target.transform.position + new Vector3(3, 0, 0);
 
         yield return null;
 
