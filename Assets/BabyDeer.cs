@@ -8,7 +8,6 @@ public class BabyDeer : MonoBehaviour
 {
 
     NavMeshAgent agent;
-    Animator animator;
 
     public GameObject target;
 
@@ -18,7 +17,6 @@ public class BabyDeer : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponentInChildren<Animator>();
 
         agent.enabled = false;
     }
@@ -46,10 +44,11 @@ public class BabyDeer : MonoBehaviour
     }
 
     IEnumerator startFollowing() {
-        animator.Play("deerescape");
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.5f);
 
         transform.position = target.transform.position;
+
+        yield return null;
 
         agent.enabled = true;
         agent.SetDestination(target.transform.position);

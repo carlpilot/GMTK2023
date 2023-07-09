@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour {
     float sprintTimer = 0f;
     float sprintCooldownTimer = 0f;
 
+    private Vector3 spawn;
+
     void Awake () {
         cc = GetComponent<CharacterController> ();
         if (isDeer){
@@ -144,5 +146,10 @@ public class PlayerMovement : MonoBehaviour {
     void OnDisable () {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void SetSpawn(Vector3 point) {
+        transform.position = point;
+        spawn = point;
     }
 }

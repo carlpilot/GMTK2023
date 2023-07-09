@@ -190,11 +190,21 @@ public class CurrentGameManager : MonoBehaviour
             enableDayMusic();
         } else {
             // Switching to deer
+
+            WayPoint[] waypoints = gameObject.GetComponent<HerdManager>().Start2();
+            WayPoint randomWP = waypoints[Random.Range(0, waypoints.Length)];
+
             isDeer = true;
             hunter.SetActive(false);
             deer.SetActive(true);
             babyDeer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
+            
+            WorldGenerator wg = FindObjectOfType<WorldGenerator>();
+            spawn = new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f));
+            spawn = new Vector3(spawn.x, wg.GetWorldHeight(spawn.x, spawn.z), spawn.z);
+            deer.SetSpawn(spawn);
+
             for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
                 while (x < 10 && x > -10) x = Random.Range(-20, 20);
