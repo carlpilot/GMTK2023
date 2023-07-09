@@ -18,6 +18,8 @@ public class ShootTheDeer : MonoBehaviour
 
     private float cooldown = 3f;
     private float cooldownTimer = 0.5f;
+    private Animator animator;
+    private bool aiming = false;
 
     void Awake()
     {
@@ -26,13 +28,21 @@ public class ShootTheDeer : MonoBehaviour
     
     void Start()
     {
-        
+        animator = transform.GetChild(0).gameObject.GetComponentsInChildren<Animator>()[0];
     }
     
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && cooldownTimer <= 0f)
         {
+            animator.Play("aim");
+            aiming = true;
+        }
+        if (Input.GetMouseButtonUp(0) && aiming)
+        {
+            aiming = false;
+            animator.SetTrigger("ShotFired");
+
             gunshotSFX.Play();
             cooldownTimer = cooldown;
             GameObject bullet = Instantiate(bulletPrefab, pm.camera.position, pm.camera.rotation);
