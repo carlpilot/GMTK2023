@@ -75,6 +75,7 @@ public class AIHunter : MonoBehaviour
     public float chaseShotTime = 2;
     [Tooltip("The spread of the chase shots")]
     public float chaseSpread = 20f;
+    public float minChaseDist = 3f;
 
     [Header("Noticing Deer")]
     public float idleNoticeMaxTime = 10f;
@@ -83,6 +84,8 @@ public class AIHunter : MonoBehaviour
     public float bushVisibilityMultiplier = 0.2f;
     public float crouchVisibilityMultiplier = 0.5f;
     public float sprintVisibilityMultiplier = 2f;
+
+    public float maxDeerNoticeDist = 75f;
 
     [Header("Sound")]
     public AudioSource rustlingSFX;
@@ -149,7 +152,7 @@ public class AIHunter : MonoBehaviour
             var end = deer.transform.position + new Vector3(0, 1f, 0);
             var dir = (end-start).normalized;
             var deerInView = false;
-            if (Physics.Raycast(start, dir, out hit, 100f, canBlockSightLayerMask) && hasTaggedParent(hit.collider.gameObject, "Deer")) deerInView = true;
+            if (Physics.Raycast(start, dir, out hit, maxDeerNoticeDist, canBlockSightLayerMask) && hasTaggedParent(hit.collider.gameObject, "Deer")) deerInView = true;
 
             if (canSeeDeer){
                 // We can already see the deer, so hiding in bushes is not really any use
@@ -419,6 +422,7 @@ public class AIHunter : MonoBehaviour
         anim.SetInteger("animState", 2); // Chase
         SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
+            agent.isStopped = (transform.position - deer.transform.position).magnitude <= minChaseDist;
             lastShot += Time.deltaTime;
             agent.SetDestination(deer.transform.position);
             lastSeenDeerPos = deer.transform.position;

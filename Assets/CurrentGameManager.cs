@@ -56,6 +56,9 @@ public class CurrentGameManager : MonoBehaviour
     public static int lastReachedDay = 1;
     public static bool lastWasDeer = false;
 
+    bool hasShownHunterMessages = false;
+    bool hasShownDeerMessages = false;
+
 
     void Awake()
     {
@@ -102,11 +105,15 @@ public class CurrentGameManager : MonoBehaviour
     }
 
     void SendHunterControlsMessage () {
+        if (hasShownHunterMessages) return;
         HintMessage.ShowMessage ("WASD to move, hold Shift to sneak");
+        hasShownHunterMessages = true;
     }
 
     void SendDeerControlsMessage () {
+        if (hasShownDeerMessages) return;
         HintMessage.ShowMessage ("Hold Shift to sneak, Ctrl to sprint");
+        hasShownDeerMessages = true;
     }
 
     public void ShootDeer(){
@@ -196,8 +203,10 @@ public class CurrentGameManager : MonoBehaviour
 
             enableDayMusic();
 
-            HintMessage.ShowMessage ("You are the hunter, patrol the woods around your lodge");
-            Invoke ("SendHunterControlsMessage", 6.0f);
+            if (!hasShownHunterMessages) {
+                HintMessage.ShowMessage ("You are the hunter, patrol the woods around your lodge");
+                Invoke ("SendHunterControlsMessage", 6.0f);
+            }
         } else {
             // Switching to deer
 
@@ -229,8 +238,10 @@ public class CurrentGameManager : MonoBehaviour
 
             enableNightMusic();
 
-            HintMessage.ShowMessage ("Now you are the deer - find your way to the hunting lodge and free the baby deer from the cage, but watch out for the hunters!", 10);
-            Invoke ("SendDeerControlsMessage", 11);
+            if (!hasShownDeerMessages) {
+                HintMessage.ShowMessage ("Now you are the deer - find your way to the hunting lodge and free the baby deer from the cage, but watch out for the hunters!", 10);
+                Invoke ("SendDeerControlsMessage", 11);
+            }
         }
 
         for (float i = 0; i <= animationTime; i += Time.deltaTime){
