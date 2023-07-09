@@ -170,6 +170,9 @@ public class CurrentGameManager : MonoBehaviour
                 currentAI.Add(deer);
                 deer.transform.parent = transform;
 
+                WorldGenerator wg = FindObjectOfType<WorldGenerator>();
+                deer.transform.position = new Vector3(deer.transform.position.x, wg.GetWorldHeight(deer.transform.position.x, deer.transform.position.z), deer.transform.position.z);
+
                 float v = Random.value;
                 if (v < 0.3f) {
                     deer.GetComponentInChildren<Renderer>().material = deerMat1;
@@ -180,6 +183,8 @@ public class CurrentGameManager : MonoBehaviour
                     transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
                 }
             }
+            //
+
             // TODO: move the hunter to a random location
 
             enableDayMusic();
