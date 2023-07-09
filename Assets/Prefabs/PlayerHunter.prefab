@@ -243,7 +243,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8341135708975967001}
-  m_LocalRotation: {x: -0, y: 0.7362653, z: -0, w: 0.6766931}
+  m_LocalRotation: {x: 0, y: 0.7362625, z: 0, w: 0.67669606}
   m_LocalPosition: {x: -1.404, y: 0, z: -0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -284,14 +284,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 8341135707786435903}
+  isDeer: 0
   rotationSpeed: 2
-  runSpeed: 5
-  trapped: 0
-  chanceToFreeFromTrap: 0.05
-  crouching: 0
-  crouchSpeed: 2
+  sprintSpeed: 5
+  walkSpeed: 3
+  crouchSpeed: 1
+  isCrouching: 0
+  isSprinting: 0
+  isTrapped: 0
   noiseRange: 30
   crouchNoiseRange: 15
+  sprintNoiseRange: 50
+  chanceToFreeFromTrap: 0.05
 --- !u!114 &8341135708975967013
 MonoBehaviour:
   m_ObjectHideFlags: 0

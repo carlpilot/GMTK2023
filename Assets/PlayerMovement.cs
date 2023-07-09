@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour {
     CharacterController cc;
@@ -9,18 +11,50 @@ public class PlayerMovement : MonoBehaviour {
 
     float yaw = 0;
     float pitch = 0;
-    public float rotationSpeed = 3;
-    public float runSpeed = 5f;
 
-    public bool trapped = false;
-    public float chanceToFreeFromTrap = 0.05f;
-    public bool crouching = false;
+    public bool isDeer = false;
+
+    Volume deerVol;
+    Vignette exhaustionVingette;
+
+    [Header("Camera")]
+    public float rotationSpeed = 3;
+
+
+    [Header("Speed")]
+    public float sprintSpeed = 5f;
+    public float walkSpeed = 5f;
     public float crouchSpeed = 2f;
+
+    [Header("State")]
+    public bool isCrouching = false;
+    public bool isSprinting = false;
+    public bool isTrapped = false;
+
+    [Header("Noise")]
     public float noiseRange = 30f;
     public float crouchNoiseRange = 15f;
+    public float sprintNoiseRange = 50f;
+
+    [Header("Trapping")]
+    public float chanceToFreeFromTrap = 0.05f;
+
+    [Header("Sprinting")]
+    public float exhaustionVingetteMinIntensity = 0f;
+    public float exhaustionVingetteMaxIntensity = 1f;
+    public float sprintTime = 5f;
+    public float sprintCooldown = 5f;
+
+    float sprintTimer = 0f;
+    float sprintCooldownTimer = 0f;
 
     void Awake () {
         cc = GetComponent<CharacterController> ();
+        if (isDeer){
+            deerVol = GetComponentInChildren<Volume>();
+            deerVol.profile.TryGet(out exhaustionVingette);
+        }
+        
     }
 
     void Start () {
@@ -28,8 +62,9 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Update () {
-        if (!trapped) {
+        if (!isTrapped) {
             Vector3 moveVec = Vector3.zero;
+            var moveSpeed = walkSpeed;
             if (Input.GetKey (KeyCode.W)) {
                 moveVec += transform.forward;
             }
@@ -43,15 +78,36 @@ public class PlayerMovement : MonoBehaviour {
                 moveVec += transform.right;
             }
             if (Input.GetKey (KeyCode.LeftShift)) {
-                crouching = true;
+                isCrouching = true;
+                isSprinting = false;
+                moveSpeed = crouchSpeed;
+            } else if (Input.GetKey (KeyCode.LeftControl) && sprintTimer <= sprintTime) {
+                isCrouching = false;
+                isSprinting = true;
+                moveSpeed = sprintSpeed;
             } else {
-                crouching = false;
+                isCrouching = false;
+                isSprinting = false;
+                moveSpeed = walkSpeed;
             }
 
-            cc.Move (moveVec.normalized * Time.deltaTime * (crouching ? crouchSpeed : runSpeed));
+            if (isSprinting) {
+                sprintTimer += Time.deltaTime;
+                sprintCooldownTimer = 0f;
+            } else{
+                sprintCooldownTimer += Time.deltaTime;
+                if (sprintCooldownTimer >= sprintCooldown) {
+                    sprintTimer -= Time.deltaTime;
+                    sprintTimer = Mathf.Clamp (sprintTimer, 0f, sprintTime);
+                }
+            }
+
+            if (exhaustionVingette) exhaustionVingette.intensity.value = Mathf.Lerp (exhaustionVingetteMinIntensity, exhaustionVingetteMaxIntensity, sprintTimer / sprintTime);
+
+            cc.Move (moveVec.normalized * Time.deltaTime * moveSpeed);
 
             if (moveVec.magnitude > 0) {
-                Collider[] hitColliders = Physics.OverlapSphere (transform.position, (crouching ? crouchNoiseRange : noiseRange));
+                Collider[] hitColliders = Physics.OverlapSphere (transform.position, (isCrouching ? crouchNoiseRange : noiseRange));
                 foreach (Collider c in hitColliders) {
                     if (c.gameObject.tag == "Deer" && c.transform.parent != null && c.transform.parent.gameObject.GetComponent<DeerMovement>() != null) {
                         c.transform.parent.gameObject.GetComponent<DeerMovement>().flee(transform.position);
@@ -59,7 +115,7 @@ public class PlayerMovement : MonoBehaviour {
                 }
             }
         } else {
-            if (Input.GetKeyDown (KeyCode.Space) && Random.value < chanceToFreeFromTrap) trapped = false;
+            if (Input.GetKeyDown (KeyCode.Space) && Random.value < chanceToFreeFromTrap) isTrapped = false;
         }
 
         yaw += Input.GetAxis ("Mouse X") * rotationSpeed;
