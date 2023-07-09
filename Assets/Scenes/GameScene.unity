@@ -844,6 +844,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1014881734615520323, guid: 6e3879b3d26ea3d43afaab226ba9dbda,
         type: 3}
+      propertyPath: babyDeer
+      value: 
+      objectReference: {fileID: 2113503570}
+    - target: {fileID: 1014881734615520323, guid: 6e3879b3d26ea3d43afaab226ba9dbda,
+        type: 3}
       propertyPath: playerDeerCamera
       value: 
       objectReference: {fileID: 61615124}
