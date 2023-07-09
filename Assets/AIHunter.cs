@@ -142,6 +142,8 @@ public class AIHunter : MonoBehaviour
                 matb.color = Color.black;
                 break;
         }
+        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer < 0f) cooldownTimer = 0f;
     }
 
     bool DeerInView(float visibleProbabilityPS = -1) {
@@ -413,7 +415,7 @@ public class AIHunter : MonoBehaviour
             if (DeerInView()) {
                 // If it is, take an accurate shot every n seconds
                 lastSeenDeer = 0f;
-                if (lastShot > chaseShotTime){
+                if (lastShot > chaseShotTime && cooldownTimer <= 0f){
                     lastShot = 0f;
                     StartCoroutine(shootBullet(deer.transform.position+Vector3.up*1f, chaseSpread));
                 }
