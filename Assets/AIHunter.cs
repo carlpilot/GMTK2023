@@ -143,6 +143,7 @@ public class AIHunter : MonoBehaviour
         {
             float visibilityMultiplier = 1f;
             // If the player is in a bush, they are harder to see
+            currentStealthLevel = 0;
             var closestPlayerBush = FindClosestBush(deer.transform.position);
             if ((closestPlayerBush.transform.position - deer.transform.position).magnitude < 2f) { visibilityMultiplier *= bushVisibilityMultiplier; currentStealthLevel ++;}
             if (deer.GetComponent<PlayerMovement>().isCrouching) {visibilityMultiplier *= crouchVisibilityMultiplier; currentStealthLevel ++;}
