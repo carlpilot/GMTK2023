@@ -32,6 +32,10 @@ public class CurrentGameManager : MonoBehaviour
     public Gradient fogColorCurve;
     public Gradient sunColorCurve;
 
+    [Header("Night and Day Music")]
+    public AudioSource dayMusic;
+    public AudioSource nightMusic;
+
     GameObject deer;
     GameObject hunter;
 
@@ -67,7 +71,7 @@ public class CurrentGameManager : MonoBehaviour
     void Update()
     {
         gameTime +=Time.deltaTime / dayDuration;
-        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f));
+        gameTime =  Mathf.Min(gameTime, (isDeer ? 0.75f : 0.25f)); 
 
         float gt = Mathf.Repeat(gameTime, 1f);
         Vector3 sunDirectionMorning = Quaternion.Euler(0, sunAxisAngle, 0) * new Vector3(0, 0, 1);
@@ -85,7 +89,7 @@ public class CurrentGameManager : MonoBehaviour
                 // We are a deer and it is night time
             } else{
                 // We are a deer and survived the night. Switch to hunter
-                print("Switching to hunter from deer");
+                print("Switching to hunter from deer"); 
                 StartCoroutine(SwitchStates(false));
             }
         } else {
@@ -109,6 +113,16 @@ public class CurrentGameManager : MonoBehaviour
         print("Player Dead");
         if (isSwitchingStates) return;
         deer.SetActive(false);
+    }
+
+    public void enableDayMusic(){
+        dayMusic.Play();
+        nightMusic.Stop();
+    }
+
+    public void enableNightMusic(){
+        dayMusic.Stop();
+        nightMusic.Play();
     }
 
     IEnumerator SwitchStates(bool toDeer, bool startWhite = false){
@@ -142,6 +156,8 @@ public class CurrentGameManager : MonoBehaviour
             }
             gameObject.GetComponent<HerdManager>().Start2();
             // TODO: move the hunter to a random location
+
+            enableDayMusic();
         } else {
             // Switching to deer
             isDeer = true;
@@ -153,6 +169,8 @@ public class CurrentGameManager : MonoBehaviour
                 currentAI.Add(hunter);
             }
             // TODO: move the deer to a random location
+
+            enableNightMusic();
         }
 
         for (float i = 0; i <= animationTime; i += Time.deltaTime){
