@@ -87,6 +87,7 @@ public class AIHunter : MonoBehaviour
     public AudioSource rustlingSFX;
     public AudioSource gunshotSFX;
     public AudioSource runningSFX;
+    public AudioSource walkingSFX;
     public AudioSource reloadSFX;
     private Heartbeat heartbeatManager;
 
@@ -178,7 +179,8 @@ public class AIHunter : MonoBehaviour
         yield return null;
         agent.speed = idleSpeed;
         rustlingSFX.Stop();
-        runningSFX.Play();
+        walkingSFX.Play();
+        runningSFX.Stop();
         var idleSwitchStateTimer = Random.Range(0f, idleWanderToHideTime);
         agent.isStopped = false;
         agent.SetDestination(new Vector3(Random.Range(-idleRange, idleRange), 0, Random.Range(-idleRange, idleRange)));
@@ -212,7 +214,8 @@ public class AIHunter : MonoBehaviour
         yield return null;
         agent.speed = idleSpeed;
         rustlingSFX.Stop();
-        runningSFX.Play();
+        walkingSFX.Play();
+        runningSFX.Stop();
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
         var closestBush = FindClosestBush(transform.position);
         anim.SetInteger("animState", 3); // Walk
@@ -302,6 +305,7 @@ public class AIHunter : MonoBehaviour
         anim.SetInteger("animState", 4); // Crawl
         rustlingSFX.Play();
         runningSFX.Stop();
+        walkingSFX.Stop();
         SetNoticeMaxTime(alertNoticeMaxTime);
         // Crawl towards the deers position
         // If we are within range, switch to snipe
@@ -344,7 +348,8 @@ public class AIHunter : MonoBehaviour
         agent.SetDestination(lastSeenDeerPos);
         anim.SetInteger("animState", 3); // Walk
         rustlingSFX.Stop();
-        runningSFX.Play();
+        walkingSFX.Play();
+        runningSFX.Stop();
         SetNoticeMaxTime(alertNoticeMaxTime);
         while (true){
             // Check if the deer is in sight
@@ -371,6 +376,7 @@ public class AIHunter : MonoBehaviour
         anim.SetInteger("animState", 1); // Snipe
         rustlingSFX.Stop();
         runningSFX.Stop();
+        walkingSFX.Stop();
         reloadSFX.Play();
         SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
@@ -407,6 +413,7 @@ public class AIHunter : MonoBehaviour
         var lastShot = 0f;
         rustlingSFX.Stop();
         runningSFX.Play();
+        walkingSFX.Stop();
         anim.SetInteger("animState", 2); // Chase
         SetNoticeMaxTime(activeNoticeMaxTime);
         while (true){
