@@ -80,6 +80,8 @@ public class AIHunter : MonoBehaviour
     public float idleNoticeMaxTime = 10f;
     public float alertNoticeMaxTime = 3f;
     public float activeNoticeMaxTime = 1f;
+    public float bushVisibilityMultiplier = 0.2f;
+    public float crouchVisibilityMultiplier = 0.5f;
 
     [Header("Sound")]
     public AudioSource rustlingSFX;
@@ -132,7 +134,13 @@ public class AIHunter : MonoBehaviour
 
         // Deer viewing logic
         {
-            noticeTimer -= Time.deltaTime;
+            float visibilityMultiplier = 1f;
+            // If the player is in a bush, they are harder to see
+            var closestPlayerBush = FindClosestBush(deer.transform.position);
+            if ((closestPlayerBush.transform.position - deer.transform.position).magnitude < 2f) visibilityMultiplier *= bushVisibilityMultiplier;
+            if (deer.GetComponent<PlayerMovement>().isCrouching) visibilityMultiplier *= crouchVisibilityMultiplier;
+
+            noticeTimer -= Time.deltaTime*visibilityMultiplier;
             RaycastHit hit;
             var start = transform.position + new Vector3(0, 1f, 0);
             var end = deer.transform.position + new Vector3(0, 1f, 0);
@@ -206,7 +214,7 @@ public class AIHunter : MonoBehaviour
         rustlingSFX.Stop();
         runningSFX.Play();
         var idleSwitchStateTimer = Random.Range(0f, idleHideToWanderTime);
-        var closestBush = FindClosestBush();
+        var closestBush = FindClosestBush(transform.position);
         anim.SetInteger("animState", 3); // Walk
         // Set destination to closest bush
         agent.isStopped = false;
@@ -258,7 +266,7 @@ public class AIHunter : MonoBehaviour
                 if (canSeeDeer){
                      // If we are in a bush, switch to sniping. Also do this with a small random chance so the hunter is just lying on the ground
                     // Else, switch to chasing
-                    var closestBush = FindClosestBush();
+                    var closestBush = FindClosestBush(transform.position);
                     if ((transform.position - closestBush.transform.position).magnitude < 1f) {
                         StartCoroutine(Sniping());
                         yield break;
@@ -428,7 +436,7 @@ public class AIHunter : MonoBehaviour
         }
     }
 
-    GameObject FindClosestBush(){
+    GameObject FindClosestBush(Vector3 at){
         // Find the closest gameobject with the tag "Bush"
         GameObject closestBush = null;
         foreach (GameObject bush in GameObject.FindGameObjectsWithTag("Bush"))
@@ -437,7 +445,7 @@ public class AIHunter : MonoBehaviour
             {
                 closestBush = bush;
             }
-            else if (Vector3.Distance(transform.position, bush.transform.position) < Vector3.Distance(transform.position, closestBush.transform.position))
+            else if (Vector3.Distance(at, bush.transform.position) < Vector3.Distance(at, closestBush.transform.position))
             {
                 closestBush = bush;
             }
