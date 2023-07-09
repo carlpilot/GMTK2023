@@ -6,6 +6,8 @@ public class CageDoor : MonoBehaviour {
 
     CurrentGameManager cgm;
 
+    public GameObject babyDeer;
+
     public Transform playerDeerCamera;
     public float openAngle = 110.0f;
     public float openTime = 1.0f;
@@ -15,6 +17,7 @@ public class CageDoor : MonoBehaviour {
 
     private void Awake () {
         cgm = FindObjectOfType<CurrentGameManager> ();
+        babyDeer = GameObject.FindWithTag("BabyDeer");
     }
 
     private void Update () {
@@ -35,6 +38,7 @@ public class CageDoor : MonoBehaviour {
         for (int i = 0; i < closeFrames; i++) {
             transform.Rotate (Vector3.left * openAngle / closeFrames);
             yield return new WaitForEndOfFrame ();
+            babyDeer.GetComponent<BabyDeer>().Escape();
         }
     }
 

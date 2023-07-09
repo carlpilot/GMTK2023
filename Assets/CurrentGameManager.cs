@@ -39,6 +39,7 @@ public class CurrentGameManager : MonoBehaviour
 
     GameObject deer;
     GameObject hunter;
+    GameObject babyDeer;
 
     public Material deerMat1;
     public Material deerMat2;
@@ -66,9 +67,11 @@ public class CurrentGameManager : MonoBehaviour
     {
         deer = GameObject.FindWithTag("Deer");
         hunter = GameObject.FindWithTag("Hunter");
+        babyDeer = GameObject.FindWithTag("BabyDeer");
 
         deer.SetActive(false);
         hunter.SetActive(false);
+        babyDeer.SetActive(false);
 
         StartCoroutine(SwitchStates(false, true));
     }
@@ -161,6 +164,7 @@ public class CurrentGameManager : MonoBehaviour
             isDeer = false;
             deer.SetActive(false);
             hunter.SetActive(true);
+            babyDeer.SetActive(false);
             for (int i = 0; i < CalcNumDeerToSpawn(); i++){
                 var deer = Instantiate(aiDeerPrefab, new Vector3(randomWP.transform.position.x + Random.Range(-15, 15f), 0f, randomWP.transform.position.z + Random.Range(-15, 15f)), Quaternion.identity);
                 currentAI.Add(deer);
@@ -184,6 +188,7 @@ public class CurrentGameManager : MonoBehaviour
             isDeer = true;
             hunter.SetActive(false);
             deer.SetActive(true);
+            babyDeer.SetActive(true);
             gameTime = Mathf.Floor(gameTime) + 0.5f;
             for (int i = 0; i < CalcNumHunterToSpawn(); i++){
                 float x = 0;
